@@ -45,7 +45,7 @@ PAGE = """<!doctype html>
   <main>
     <section class="card">
       <div class="row"><div><h2>Live agent graph</h2><div id="run-status" class="small">Loading run status...</div></div><button id="run-button">Run the loop</button></div>
-      <div class="graph-wrap"><svg id="graph" viewBox="0 0 1390 390" aria-label="Actual agent workflow"></svg></div>
+      <div class="graph-wrap"><svg id="graph" viewBox="0 0 1390 390" aria-label="Agent workflow"></svg></div>
       <div id="source" class="small"></div>
     </section>
     <div class="cols">
