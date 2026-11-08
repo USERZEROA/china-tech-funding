@@ -307,16 +307,23 @@ def final_test(state: LoopState) -> dict:
 
 def tracked(name, function):
     def wrapped(state: LoopState):
-        event(state["run_id"], name, "started")
-        try:
-            result = function(state)
-            details = {key: result[key] for key in ("cycle", "spec", "validation", "feedback",
-                                                   "route", "stop_reason", "test_metrics") if key in result}
-            event(state["run_id"], name, "completed", details)
-            return result
-        except Exception as exc:
-            event(state["run_id"], name, "failed", {"error": str(exc)})
-            raise
+        for attempt in (1, 2):
+            event(state["run_id"], name, "started", {"attempt": attempt})
+            try:
+                result = function(state)
+                details = {key: result[key] for key in ("cycle", "spec", "validation", "feedback",
+                                                       "route", "stop_reason", "test_metrics") if key in result}
+                details["attempt"] = attempt
+                event(state["run_id"], name, "completed", details)
+                return result
+            except (OSError, ConnectionError, TimeoutError) as exc:
+                event(state["run_id"], name, "retry" if attempt == 1 else "failed",
+                      {"attempt": attempt, "error": str(exc)})
+                if attempt == 2:
+                    raise
+            except Exception as exc:
+                event(state["run_id"], name, "failed", {"attempt": attempt, "error": str(exc)})
+                raise
     return wrapped
 
 

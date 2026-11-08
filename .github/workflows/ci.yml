@@ -11,7 +11,7 @@ jobs:
           - requirements: requirements.txt
             tests: tests.test_pipeline
           - requirements: requirements-agent.txt
-            tests: tests.test_agent_loop
+            tests: tests.test_agent_loop tests.test_bonus
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

@@ -1,0 +1,161 @@
+{
+  "evaluation_id": "comparison__2026-11-08T05:09:18.116137+00:00",
+  "created_utc": "2026-11-08T05:09:18.153736+00:00",
+  "run_ids": {
+    "fixed_airflow": "fixed_bonus__2026-11-08T05:08:00+00:00",
+    "simple_agent": "simple_bonus__2026-11-08T05:04:00+00:00",
+    "adaptive_agent": "adaptive__2026-11-08T05:04:31.211092+00:00"
+  },
+  "cases": [
+    {
+      "id": "same_data_split_budget",
+      "input": "Three completed workflow run IDs",
+      "expected": "Same source snapshot, company split, and two fitted models each",
+      "scoring_criteria": "1 point if all invariants hold; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "same_fingerprint": true,
+        "split_rows": [
+          {
+            "train": 315,
+            "validation": 100,
+            "test": 104
+          },
+          {
+            "train": 315,
+            "validation": 100,
+            "test": 104
+          },
+          {
+            "train": 315,
+            "validation": 100,
+            "test": 104
+          }
+        ],
+        "experiments": [
+          2,
+          2,
+          2
+        ]
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "planner_changes_execution",
+      "input": "Validated Planner graph and execution events",
+      "expected": "The graph entry and feedback edge match the two model agents actually run",
+      "scoring_criteria": "1 point if both model nodes and judge routes match the plan; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "planner_origin": "openrouter_free",
+        "planned_entry": "forest_agent",
+        "model_starts": [
+          "forest_agent",
+          "linear_agent"
+        ],
+        "routes": [
+          {
+            "cycle": 1,
+            "focus": "low_precision",
+            "target": "linear_agent"
+          },
+          {
+            "cycle": 2,
+            "focus": "two_experiment_budget",
+            "target": "final_test"
+          }
+        ]
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "intermediate_quality_route",
+      "input": "First adaptive validation metrics and plan gates",
+      "expected": "Quality Agent identifies the measured weakness and Judge follows that branch",
+      "scoring_criteria": "1 point for the exact focus and branch; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "precision": 0.2571428571428571,
+        "recall": 0.6,
+        "expected_focus": "low_precision",
+        "actual_focus": "low_precision"
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "bounded_retry",
+      "input": "Controlled first-attempt OSError in retry probe",
+      "expected": "One logged retry and success on the second attempt",
+      "scoring_criteria": "1 point for two attempts, one retry event, and recovery; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "attempts": 2,
+        "retry_events": 1,
+        "result": "recovered",
+        "test_only_fault": true
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "finite_stop_sealed_test",
+      "input": "Adaptive run event timestamps",
+      "expected": "Two model fits, final selection, one test opening, then stop",
+      "scoring_criteria": "1 point if order and counts hold; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "model_fits": 2,
+        "test_opens": 1,
+        "stop_reason": "two_experiment_budget"
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "final_output_quality",
+      "input": "One adaptive holdout evaluation",
+      "expected": "F1 at least 0.30 and AP at least the test positive prevalence",
+      "scoring_criteria": "1 point if both measured thresholds hold; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "f1": 0.3508771929824561,
+        "ap": 0.397298213602164,
+        "positive_prevalence": 0.1346153846153846,
+        "confusion_matrix": [
+          [
+            57,
+            33
+          ],
+          [
+            4,
+            10
+          ]
+        ]
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "baseline_feedback",
+      "input": "Fixed DAG feedback and simple agent feedback files",
+      "expected": "Fixed selection uses validation; simple loop revises then stops",
+      "scoring_criteria": "1 point if both feedback paths are present; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "fixed_decision": "select highest validation F1; AP breaks ties",
+        "simple_routes": [
+          "revise",
+          "finish"
+        ]
+      },
+      "score": 1,
+      "passed": true
+    }
+  ],
+  "passed": 7,
+  "total": 7,
+  "all_passed": true
+}

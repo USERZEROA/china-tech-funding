@@ -30,6 +30,22 @@ docker compose exec -T agent-ui python -m src.agent_loop
 
 Open <http://localhost:8090> for the agent graph and results. The [Part 2 run summary](artifacts/agent_runs/agent__2026-11-08T04_31_51.037232_00_00/run_summary.json) records 519 disclosed investment events, including 85 at or above $100 million. Its frozen company-grouped split has 315 training, 100 validation, and 104 test rows, with no company overlap. A validation feedback loop compared logistic regression (F1 0.359) with random forest (F1 0.360) and selected the latter. The final test returned F1 0.351, precision 0.233, recall 0.714, AP 0.397, and confusion matrix `[[57, 33], [4, 10]]`. Precision is limited, so these are exploratory results.
 
+The classroom loop was adapted with a Data Steward that checks SQL eligibility and freezes company splits, a Hypothesis Agent that chooses a second model from validation feedback, and a separate Evaluation Agent that scores validation only. The Judge selects by validation F1; a Final Test node opens the holdout once and then stops.
+
+## Run the Bonus comparison
+
+Put an OpenRouter key in the ignored `private/openrouter.env` file as `OPENROUTER_API_KEY=<your key>` for the Planner. Then run the fixed Airflow baseline, the classroom loop, and the adaptive graph:
+
+```powershell
+docker compose exec -T airflow-webserver airflow dags unpause funding_fixed_baseline
+docker compose exec -T airflow-webserver airflow dags trigger funding_fixed_baseline
+docker compose exec -T agent-ui python -m src.agent_loop
+docker compose exec -T agent-ui python -m src.adaptive
+docker compose exec -T agent-ui python -m src.bonus_eval --fixed '<Airflow run ID>' --simple '<agent run ID>' --adaptive '<adaptive run ID>'
+```
+
+Open <http://localhost:8090/bonus> for the workflow graph, evaluation cases, and comparison. The [comparison run](artifacts/bonus_runs/comparison__2026-11-08T05_09_18.116137_00_00/workflow_comparison.json) used the same 519 events, frozen company split, and two model fits per workflow. The Planner chose a forest first, then routed to a linear model after a low precision check. All three workflows reached test F1 0.351 and AP 0.397; this run shows a different route, not a model gain. The [evaluation suite](artifacts/bonus_runs/comparison__2026-11-08T05_09_18.116137_00_00/evaluation_results.json) passed 7/7 cases, including one controlled transient failure recovered after one retry. The three main runs needed no retries.
+
 ## Screenshots
 
 ### Airflow run
@@ -47,3 +63,11 @@ Open <http://localhost:8090> for the agent graph and results. The [Part 2 run su
 ### Model results
 
 ![Validation experiments and final test metrics](screenshots/04_model_metrics.png)
+
+### Adaptive execution
+
+![Planner route and adaptive workflow](screenshots/05_adaptive_execution.png)
+
+### Workflow comparison
+
+![Three workflow comparison](screenshots/06_workflow_comparison.png)

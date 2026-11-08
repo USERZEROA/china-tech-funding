@@ -1,0 +1,29 @@
+{
+  "eligible": {
+    "rows": 519,
+    "positive": 85
+  },
+  "split": {
+    "train": {
+      "rows": 315,
+      "positive": 56
+    },
+    "validation": {
+      "rows": 100,
+      "positive": 15
+    },
+    "test": {
+      "rows": 104,
+      "positive": 14
+    }
+  },
+  "features": [
+    "year",
+    "gdp_growth",
+    "gdp_per_capita",
+    "round",
+    "sector"
+  ],
+  "company_group_overlap": 0,
+  "experiment_budget": 2
+}

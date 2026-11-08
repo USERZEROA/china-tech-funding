@@ -8,6 +8,8 @@
 - A company, year, and round grouping is only a candidate event. Do not invent missing amounts or claim verified transaction identity.
 - For supervised modeling, exclude amount and its derivatives, company names, and IDs from features. Freeze company-grouped train, validation, and test splits; fit preprocessing on train only; use validation for decisions and test once for final reporting.
 - Preserve each run under its own run_id. Record source hashes, cleaning counts, quarantine reasons, merge checks, database counts, task times, and later model and agent evidence.
+- In the Bonus, validate Planner output before building the execution graph. Compare the fixed Airflow, simple agent, and adaptive agent workflows on the same source snapshot, frozen split, and model-fit budget. Keep test metrics out of routing decisions.
 - Match screenshots and metrics to the corresponding run artifacts.
 - Make a short commit and push after each completed Part or major feature using the configured Git identity. Do not deploy or submit without separate authorization. Keep local private material under `private/`, which is ignored by Git.
+- Read API keys from the environment or ignored `private/` files. Do not write secrets to code, run artifacts, screenshots, or commits.
 - Keep README claims tied to existing run files.

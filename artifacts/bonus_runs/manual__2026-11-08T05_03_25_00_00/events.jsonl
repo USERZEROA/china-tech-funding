@@ -1,0 +1,3 @@
+{"at_utc": "2026-11-08T05:03:47.291409+00:00", "node": "airflow", "phase": "started", "details": {"workflow": "fixed"}}
+{"at_utc": "2026-11-08T05:03:47.300045+00:00", "node": "data_steward", "phase": "started", "details": {}}
+{"at_utc": "2026-11-08T05:03:47.359844+00:00", "node": "data_steward", "phase": "completed", "details": {"eligible": {"rows": 519, "positive": 85}, "split": {"train": {"rows": 315, "positive": 56}, "validation": {"rows": 100, "positive": 15}, "test": {"rows": 104, "positive": 14}}}}

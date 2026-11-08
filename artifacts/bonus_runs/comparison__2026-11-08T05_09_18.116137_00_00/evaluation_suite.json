@@ -1,0 +1,51 @@
+[
+  {
+    "id": "same_data_split_budget",
+    "input": "Three completed workflow run IDs",
+    "expected": "Same source snapshot, company split, and two fitted models each",
+    "scoring_criteria": "1 point if all invariants hold; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "planner_changes_execution",
+    "input": "Validated Planner graph and execution events",
+    "expected": "The graph entry and feedback edge match the two model agents actually run",
+    "scoring_criteria": "1 point if both model nodes and judge routes match the plan; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "intermediate_quality_route",
+    "input": "First adaptive validation metrics and plan gates",
+    "expected": "Quality Agent identifies the measured weakness and Judge follows that branch",
+    "scoring_criteria": "1 point for the exact focus and branch; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "bounded_retry",
+    "input": "Controlled first-attempt OSError in retry probe",
+    "expected": "One logged retry and success on the second attempt",
+    "scoring_criteria": "1 point for two attempts, one retry event, and recovery; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "finite_stop_sealed_test",
+    "input": "Adaptive run event timestamps",
+    "expected": "Two model fits, final selection, one test opening, then stop",
+    "scoring_criteria": "1 point if order and counts hold; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "final_output_quality",
+    "input": "One adaptive holdout evaluation",
+    "expected": "F1 at least 0.30 and AP at least the test positive prevalence",
+    "scoring_criteria": "1 point if both measured thresholds hold; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "baseline_feedback",
+    "input": "Fixed DAG feedback and simple agent feedback files",
+    "expected": "Fixed selection uses validation; simple loop revises then stops",
+    "scoring_criteria": "1 point if both feedback paths are present; otherwise 0",
+    "pass_threshold": 1
+  }
+]

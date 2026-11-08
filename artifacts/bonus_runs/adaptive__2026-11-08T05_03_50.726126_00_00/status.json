@@ -1,0 +1,6 @@
+{
+  "run_id": "adaptive__2026-11-08T05:03:50.726126+00:00",
+  "status": "failed",
+  "ended_utc": "2026-11-08T05:03:52.358383+00:00",
+  "error": "expected string or bytes-like object, got 'NoneType'"
+}

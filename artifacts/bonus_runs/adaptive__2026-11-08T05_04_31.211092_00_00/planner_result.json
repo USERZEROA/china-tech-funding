@@ -1,0 +1,13 @@
+{
+  "plan": {
+    "second_on_low_recall": "linear_agent",
+    "second_on_low_precision": "linear_agent",
+    "retry_limit": 1,
+    "precision_gate": 0.65,
+    "first_agent": "forest_agent",
+    "recall_gate": 0.6
+  },
+  "origin": "openrouter_free",
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "response_id": "gen-1794114271-S4J0EqsC7NXYUzIybhAJ"
+}

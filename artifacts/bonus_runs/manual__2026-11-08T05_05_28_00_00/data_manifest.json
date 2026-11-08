@@ -1,0 +1,45 @@
+{
+  "run_id": "manual__2026-11-08T05:05:28+00:00",
+  "source_run_id": "manual__2026-11-08T04:19:45+00:00",
+  "source_hashes": {
+    "Documentation.csv": "9dc5948e10746a6b097d04fe325c1f518e75ff6ac2717e2bb39f12418193d4c5",
+    "Dataset.csv": "a1af2ace102b8a1eab2804e9dd9871b3a2427330ac54a09805a0e48f381aed6a",
+    "Codebook.csv": "f462496c708c173099a470f7ac830ab2abf7faa26315da638fb23a5fe114f43a",
+    "gdp_growth": "3021a1677aaf1966b89d0ae00c9a16a7d2742564cf2fa075759350f11e543e15",
+    "gdp_per_capita": "7bb4d51eba68c16ee95a7c2ef353a6a254b97fbec6cea0e1310ef2f4637f21c7"
+  },
+  "data_fingerprint": "cd9326054146aaedd02e282a0b2b5d4e4d9af3e34d62ac4e83c42f96f117fcfc",
+  "split_version": 1,
+  "split": {
+    "train": {
+      "rows": 315,
+      "positive": 56
+    },
+    "validation": {
+      "rows": 100,
+      "positive": 15
+    },
+    "test": {
+      "rows": 104,
+      "positive": 14
+    }
+  },
+  "eligible": {
+    "rows": 519,
+    "positive": 85
+  },
+  "company_group_overlap": 0,
+  "features": [
+    "year",
+    "gdp_growth",
+    "gdp_per_capita",
+    "round",
+    "sector"
+  ],
+  "excluded_from_features": [
+    "amount_usd",
+    "company",
+    "event_key"
+  ],
+  "sql": "SELECT event_key, company, year, gdp_growth, gdp_per_capita,\n             round, sector, amount_usd::double precision FROM funding_events\n             WHERE deal_type = 'investment' AND amount_usd IS NOT NULL AND amount_usd > 0\n             ORDER BY event_key"
+}

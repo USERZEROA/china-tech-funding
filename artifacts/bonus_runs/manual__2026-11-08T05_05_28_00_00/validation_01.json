@@ -1,0 +1,29 @@
+{
+  "cycle": 1,
+  "agent": "linear_agent",
+  "spec": {
+    "family": "logistic_regression",
+    "C": 1.0,
+    "class_weight": "balanced"
+  },
+  "model_path": "/opt/airflow/project/artifacts/bonus_runs/manual__2026-11-08T05_05_28_00_00/model_01.joblib",
+  "validation": {
+    "f1": 0.358974358974359,
+    "precision": 0.2916666666666667,
+    "recall": 0.4666666666666667,
+    "average_precision": 0.3645579387997322,
+    "confusion_matrix": [
+      [
+        68,
+        17
+      ],
+      [
+        8,
+        7
+      ]
+    ],
+    "threshold": 0.5,
+    "rows": 100,
+    "positive": 15
+  }
+}

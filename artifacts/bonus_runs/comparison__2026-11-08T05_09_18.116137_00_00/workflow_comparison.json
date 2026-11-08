@@ -1,0 +1,131 @@
+{
+  "evaluation_id": "comparison__2026-11-08T05:09:18.116137+00:00",
+  "source_run_id": "manual__2026-11-08T04:19:45+00:00",
+  "same_data_split_budget": true,
+  "rows": [
+    {
+      "workflow": "fixed_airflow",
+      "run_id": "fixed_bonus__2026-11-08T05:08:00+00:00",
+      "source_run_id": "manual__2026-11-08T04:19:45+00:00",
+      "data_fingerprint": "cd9326054146aaedd02e282a0b2b5d4e4d9af3e34d62ac4e83c42f96f117fcfc",
+      "split": {
+        "train": {
+          "rows": 315,
+          "positive": 56
+        },
+        "validation": {
+          "rows": 100,
+          "positive": 15
+        },
+        "test": {
+          "rows": 104,
+          "positive": 14
+        }
+      },
+      "experiments": 2,
+      "validation_f1": 0.36,
+      "test_f1": 0.3508771929824561,
+      "test_precision": 0.23255813953488372,
+      "test_recall": 0.7142857142857143,
+      "test_ap": 0.397298213602164,
+      "test_confusion_matrix": [
+        [
+          57,
+          33
+        ],
+        [
+          4,
+          10
+        ]
+      ],
+      "event_seconds": 4.734,
+      "event_count": 11,
+      "retry_events": 0,
+      "stop_reason": "predefined_steps_completed"
+    },
+    {
+      "workflow": "simple_agent",
+      "run_id": "simple_bonus__2026-11-08T05:04:00+00:00",
+      "source_run_id": "manual__2026-11-08T04:19:45+00:00",
+      "data_fingerprint": "cd9326054146aaedd02e282a0b2b5d4e4d9af3e34d62ac4e83c42f96f117fcfc",
+      "split": {
+        "train": {
+          "rows": 315,
+          "positive": 56,
+          "negative": 259
+        },
+        "validation": {
+          "rows": 100,
+          "positive": 15,
+          "negative": 85
+        },
+        "test": {
+          "rows": 104,
+          "positive": 14,
+          "negative": 90
+        }
+      },
+      "experiments": 2,
+      "validation_f1": 0.36,
+      "test_f1": 0.3508771929824561,
+      "test_precision": 0.23255813953488372,
+      "test_recall": 0.7142857142857143,
+      "test_ap": 0.397298213602164,
+      "test_confusion_matrix": [
+        [
+          57,
+          33
+        ],
+        [
+          4,
+          10
+        ]
+      ],
+      "event_seconds": 0.474,
+      "event_count": 20,
+      "retry_events": 0,
+      "stop_reason": "two_experiment_budget"
+    },
+    {
+      "workflow": "adaptive_agent",
+      "run_id": "adaptive__2026-11-08T05:04:31.211092+00:00",
+      "source_run_id": "manual__2026-11-08T04:19:45+00:00",
+      "data_fingerprint": "cd9326054146aaedd02e282a0b2b5d4e4d9af3e34d62ac4e83c42f96f117fcfc",
+      "split": {
+        "train": {
+          "rows": 315,
+          "positive": 56
+        },
+        "validation": {
+          "rows": 100,
+          "positive": 15
+        },
+        "test": {
+          "rows": 104,
+          "positive": 14
+        }
+      },
+      "experiments": 2,
+      "validation_f1": 0.36,
+      "test_f1": 0.3508771929824561,
+      "test_precision": 0.23255813953488372,
+      "test_recall": 0.7142857142857143,
+      "test_ap": 0.397298213602164,
+      "test_confusion_matrix": [
+        [
+          57,
+          33
+        ],
+        [
+          4,
+          10
+        ]
+      ],
+      "event_seconds": 5.375,
+      "event_count": 15,
+      "retry_events": 0,
+      "stop_reason": "two_experiment_budget"
+    }
+  ],
+  "summary": "All three workflows used the same disclosed investments and frozen company split. The adaptive planner changed model order and followed validation feedback. Holdout F1 and AP are reported without using test results for routing."
+}

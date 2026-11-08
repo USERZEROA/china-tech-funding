@@ -7,9 +7,11 @@ from datetime import datetime, timezone
 from flask import Flask, jsonify, render_template_string
 
 from src.agent_loop import AGENT_RUNS, graph_spec, run_agent_loop
+from src.bonus_web import bonus_page
 
 
 app = Flask(__name__)
+app.register_blueprint(bonus_page)
 run_lock = threading.Lock()
 
 PAGE = """<!doctype html>
