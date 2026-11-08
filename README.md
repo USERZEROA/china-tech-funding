@@ -4,12 +4,21 @@
 
 This project studies financing events involving eight Chinese technology investors. It joins [Zenodo investment records](https://zenodo.org/records/19194192) for Chinese Technology & Software investees with [World Bank China GDP growth](https://api.worldbank.org/v2/country/CHN/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=1998:2023&per_page=100) and [GDP per capita](https://api.worldbank.org/v2/country/CHN/indicator/NY.GDP.PCAP.CD?format=json&date=1998:2023&per_page=100). A financing event in year `t` uses macro data from `t-1`.
 
+The main files are the [Airflow pipeline DAG](dags/china_tech_funding.py), [data pipeline](src/pipeline.py), [model loop](src/agent_loop.py), and [live pages](src/agent_web.py). The Bonus adds a [fixed Airflow baseline](dags/funding_fixed_baseline.py), [adaptive graph](src/adaptive.py), [evaluation suite](src/bonus_eval.py), and [comparison page](src/bonus_web.py). [Docker Compose](compose.yaml) starts the services.
+
 ## Run Part 1
 
 Start Docker Desktop with Linux containers. From this directory:
 
 ```powershell
 docker compose up --build -d
+docker compose exec -T airflow-webserver airflow dags list
+```
+
+Once `china_tech_funding` appears in the list, run:
+
+```powershell
+docker compose exec -T airflow-webserver airflow dags unpause china_tech_funding
 docker compose exec -T airflow-webserver airflow dags trigger china_tech_funding
 docker compose exec -T airflow-webserver airflow dags list-runs -d china_tech_funding -o plain
 ```
@@ -55,7 +64,7 @@ docker compose exec -T agent-ui python -m src.bonus_eval --fixed '<Airflow run I
 
 Wait for the fixed Airflow DAG to show `success` before running the comparison command. Use the run IDs printed by the three commands; the evaluator checks their source snapshot, split files, and fit budgets. The Planner needs a working API key for the full Bonus evaluation. Open <http://localhost:8090/bonus> for the workflow graph, evaluation cases, and comparison.
 
-The [comparison run](artifacts/bonus_runs/comparison__2026-11-08T06_03_03.400078_00_00/workflow_comparison.json) used the same 519 events and company split. The Planner chose a forest first, then a linear model after low precision feedback. Low recall would use different linear-model settings; meeting both quality gates would stop early. All three workflows reached test F1 0.351 and AP 0.397, so this comparison shows adaptive coordination without a model gain. The [evaluation results](artifacts/bonus_runs/comparison__2026-11-08T06_03_03.400078_00_00/evaluation_results.json) passed 15/15 cases, including identical split file hashes and distinct actions for the three feedback outcomes. A controlled transient error recovered after one retry; the main runs needed none.
+The [comparison run](artifacts/bonus_runs/comparison__2026-11-08T06_42_10.486749_00_00/workflow_comparison.json) used the same 519 events and company split. The Planner chose a forest first, then a linear model after low precision feedback. Low recall would use different linear-model settings; meeting both quality gates would stop early. All three workflows reached test F1 0.351 and AP 0.397, so this comparison shows adaptive coordination without a model gain. The [evaluation results](artifacts/bonus_runs/comparison__2026-11-08T06_42_10.486749_00_00/evaluation_results.json) passed 15/15 cases, including identical split file hashes and distinct actions for the three feedback outcomes. A controlled transient error recovered after one retry. No model-step retries occurred in the three comparison runs. The Planner obtained a valid response on its second API attempt.
 
 ## Screenshots
 

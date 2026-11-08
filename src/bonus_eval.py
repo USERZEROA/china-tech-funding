@@ -18,6 +18,13 @@ def read_events(path):
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
 
 
+def check_first_route(validation, plan, actual_route):
+    quality = adaptive.quality_focus(validation, plan)
+    target, reason = adaptive.next_step(1, quality, plan)
+    return {"quality": quality, "target": target, "reason": reason,
+            "matches": actual_route["focus"] == reason and actual_route["target"] == target}
+
+
 def case(case_id, input_text, expected, scoring, threshold, actual, score):
     return {"id": case_id, "input": input_text, "expected": expected,
             "scoring_criteria": scoring, "pass_threshold": threshold,
@@ -90,8 +97,10 @@ def evaluate(fixed_run_id: str, simple_run_id: str, adaptive_run_id: str,
                       {"sha256": partition_hashes}, int(same_files)))
 
     first_validation = summaries["adaptive_agent"]["experiments"][0]["validation"]
-    expected_focus = adaptive.quality_focus(first_validation, plan)
-    expected_route, expected_stop = adaptive.next_step(1, expected_focus, plan)
+    first_route = check_first_route(first_validation, plan, routes[0])
+    expected_focus = first_route["quality"]
+    expected_route = first_route["target"]
+    expected_stop = first_route["reason"]
     expected_models = [plan["first_agent"]]
     if expected_route in adaptive.AGENTS:
         expected_models.append(expected_route)
@@ -120,14 +129,19 @@ def evaluate(fixed_run_id: str, simple_run_id: str, adaptive_run_id: str,
                        if len(summaries["adaptive_agent"]["experiments"]) > 1 else None},
                       int(graph_actions_ok)))
 
-    focus_ok = (routes[0]["focus"] == expected_focus
-                and routes[0]["target"] == expected_route)
+    quality_outputs = [e["details"] for e in events["adaptive_agent"]
+                       if e["node"] == "quality_agent" and e["phase"] == "completed"]
+    focus_ok = (first_route["matches"] and quality_outputs[0]["focus"] == expected_focus
+                and quality_outputs[0]["validation"] == first_validation)
     cases.append(case("intermediate_quality_route", "First adaptive validation metrics and plan gates",
-                      "Quality Agent identifies the measured weakness and Judge follows that branch",
-                      "1 point for the exact focus and branch; otherwise 0", 1,
+                      "Quality Agent identifies the result and Judge follows the matching route",
+                      "1 point for the exact route reason and target; otherwise 0", 1,
                       {"precision": first_validation["precision"],
                        "recall": first_validation["recall"],
-                       "expected_focus": expected_focus, "actual_focus": routes[0]["focus"],
+                       "quality_result": expected_focus,
+                       "logged_quality_result": quality_outputs[0]["focus"],
+                       "expected_route_reason": expected_stop,
+                       "actual_route_reason": routes[0]["focus"],
                        "expected_target": expected_route, "actual_target": routes[0]["target"]},
                       int(focus_ok and applied)))
 

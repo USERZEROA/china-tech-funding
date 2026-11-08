@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
-from src import adaptive, bonus_common
+from src import adaptive, bonus_common, bonus_eval
 
 
 class BonusRulesTest(unittest.TestCase):
@@ -51,6 +51,40 @@ class BonusRulesTest(unittest.TestCase):
                          ["low_precision", "low_recall", "quality_pass"])
         self.assertNotEqual(actions[0][3], actions[1][3])
         self.assertEqual(actions[2][1:3], ("final_test", "quality_gate_met"))
+
+    def test_quality_pass_graph_route_is_accepted_by_evaluator(self):
+        plan = adaptive.validate_plan(adaptive.fallback_plan())
+        validation = {"precision": 0.90, "recall": 0.90, "f1": 0.90,
+                      "average_precision": 0.90}
+        logged = []
+
+        def train_once(run_id, cycle, spec, agent):
+            return {"cycle": cycle, "agent": agent, "spec": spec,
+                    "validation": validation}
+
+        def finish(run_id, mode, trials, stop_reason, extra):
+            return {"experiments": trials, "stop_reason": stop_reason,
+                    "routes": extra["routes"]}
+
+        with patch.object(bonus_common, "train_validate", side_effect=train_once), \
+                patch.object(bonus_common, "finish", side_effect=finish), \
+                patch.object(bonus_common, "record",
+                             side_effect=lambda run_id, node, phase, details:
+                             logged.append((node, phase, details))):
+            state = adaptive.build_graph(plan).invoke(
+                {"run_id": "controlled_quality_pass", "plan": plan,
+                 "cycle": 0, "trials": [], "routes": []})
+
+        summary = state["summary"]
+        self.assertEqual(len(summary["experiments"]), 1)
+        self.assertEqual(summary["stop_reason"], "quality_gate_met")
+        self.assertIn(("judge_agent", "routed",
+                       {"cycle": 1, "focus": "quality_gate_met", "target": "final_test"}), logged)
+        self.assertIn(("quality_agent", "completed",
+                       {"cycle": 1, "focus": "quality_pass", "validation": validation}), logged)
+        checked = bonus_eval.check_first_route(validation, plan, summary["routes"][0])
+        self.assertEqual(checked["quality"], "quality_pass")
+        self.assertTrue(checked["matches"])
 
     def test_planner_input_excludes_holdout_labels_and_total_positives(self):
         manifest = {"split": {"train": {"rows": 315, "positive": 56},

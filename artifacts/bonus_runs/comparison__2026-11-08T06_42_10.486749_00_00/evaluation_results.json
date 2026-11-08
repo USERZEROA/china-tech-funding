@@ -1,0 +1,422 @@
+{
+  "evaluation_id": "comparison__2026-11-08T06:42:10.486749+00:00",
+  "created_utc": "2026-11-08T06:42:10.534896+00:00",
+  "run_ids": {
+    "fixed_airflow": "manual__2026-11-08T05:53:40+00:00",
+    "simple_agent": "agent__2026-11-08T05:53:28.262608+00:00",
+    "adaptive_agent": "adaptive__2026-11-08T06:02:46.749260+00:00"
+  },
+  "cases": [
+    {
+      "id": "same_data_split_budget",
+      "input": "Three completed workflow run IDs",
+      "expected": "Same source snapshot and company split; each workflow permits at most two fits",
+      "scoring_criteria": "1 point if all invariants hold; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "same_fingerprint": true,
+        "split_rows": [
+          {
+            "train": 315,
+            "validation": 100,
+            "test": 104
+          },
+          {
+            "train": 315,
+            "validation": 100,
+            "test": 104
+          },
+          {
+            "train": 315,
+            "validation": 100,
+            "test": 104
+          }
+        ],
+        "experiments": [
+          2,
+          2,
+          2
+        ]
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "same_partition_files",
+      "input": "Three workflows' train, validation, and test CSV files",
+      "expected": "Each matching partition has identical SHA-256 bytes across workflows",
+      "scoring_criteria": "1 point if all three partitions match byte for byte; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "sha256": {
+          "train": {
+            "fixed_airflow": "054007a16b5062eed0e387786bbe0094212f3adf945d2d9cb9fa55f09a273216",
+            "simple_agent": "054007a16b5062eed0e387786bbe0094212f3adf945d2d9cb9fa55f09a273216",
+            "adaptive_agent": "054007a16b5062eed0e387786bbe0094212f3adf945d2d9cb9fa55f09a273216"
+          },
+          "validation": {
+            "fixed_airflow": "276535c28923c79a39bf24efc66129f4ce6f46d189055bbb5f142983c08ea851",
+            "simple_agent": "276535c28923c79a39bf24efc66129f4ce6f46d189055bbb5f142983c08ea851",
+            "adaptive_agent": "276535c28923c79a39bf24efc66129f4ce6f46d189055bbb5f142983c08ea851"
+          },
+          "test": {
+            "fixed_airflow": "b27891916d1278841f2b37c799ea5ff76d0256d911a817881a94b963b069aaf3",
+            "simple_agent": "b27891916d1278841f2b37c799ea5ff76d0256d911a817881a94b963b069aaf3",
+            "adaptive_agent": "b27891916d1278841f2b37c799ea5ff76d0256d911a817881a94b963b069aaf3"
+          }
+        }
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "planner_changes_execution",
+      "input": "Validated Planner graph and execution events",
+      "expected": "The graph entry, feedback route, and executed model nodes match the plan",
+      "scoring_criteria": "1 point if all executed nodes and routes match; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "planner_origin": "openrouter_free",
+        "planned_entry": "forest_agent",
+        "model_starts": [
+          "forest_agent",
+          "linear_agent"
+        ],
+        "routes": [
+          {
+            "cycle": 1,
+            "focus": "low_precision",
+            "target": "linear_agent"
+          },
+          {
+            "cycle": 2,
+            "focus": "two_experiment_budget",
+            "target": "final_test"
+          }
+        ]
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "saved_graph_branch_actions",
+      "input": "Saved graph plan and executed second experiment",
+      "expected": "Different feedback branches carry different model settings; executed settings match the graph",
+      "scoring_criteria": "1 point if graph actions differ and the executed branch matches; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "branch_actions": {
+          "low_precision": {
+            "target": "linear_agent",
+            "model_spec": {
+              "family": "logistic_regression",
+              "C": 0.3,
+              "class_weight": null
+            }
+          },
+          "low_recall": {
+            "target": "linear_agent",
+            "model_spec": {
+              "family": "logistic_regression",
+              "C": 3.0,
+              "class_weight": "balanced"
+            }
+          },
+          "quality_pass": {
+            "target": "final_test",
+            "model_spec": null
+          }
+        },
+        "executed_second_spec": {
+          "family": "logistic_regression",
+          "C": 0.3,
+          "class_weight": null
+        }
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "intermediate_quality_route",
+      "input": "First adaptive validation metrics and plan gates",
+      "expected": "Quality Agent identifies the result and Judge follows the matching route",
+      "scoring_criteria": "1 point for the exact route reason and target; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "precision": 0.2571428571428571,
+        "recall": 0.6,
+        "quality_result": "low_precision",
+        "logged_quality_result": "low_precision",
+        "expected_route_reason": "low_precision",
+        "actual_route_reason": "low_precision",
+        "expected_target": "linear_agent",
+        "actual_target": "linear_agent"
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "planner_input_sealed",
+      "input": "Saved Planner API input",
+      "expected": "Only training labels, validation size, features, and fit budget are sent",
+      "scoring_criteria": "1 point if the input has only the allowed fields; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "fields": [
+          "experiment_budget",
+          "features",
+          "training",
+          "validation_rows"
+        ],
+        "training": {
+          "rows": 315,
+          "positive": 56
+        },
+        "validation_rows": 100
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "api_planner_used",
+      "input": "Planner response metadata",
+      "expected": "A free API model returned the structured plan used for this run",
+      "scoring_criteria": "1 point for an API response ID and API origin; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "origin": "openrouter_free",
+        "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "response_id": "gen-1794117768-QtjEju0saugsllyVowuV"
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "route_low_precision",
+      "input": {
+        "plan": {
+          "recall_gate": 0.7,
+          "retry_limit": 1,
+          "precision_gate": 0.75,
+          "second_on_low_recall": "linear_agent",
+          "first_agent": "forest_agent",
+          "second_on_low_precision": "linear_agent"
+        },
+        "validation_metrics": {
+          "precision": 0.1,
+          "recall": 0.9
+        }
+      },
+      "expected": {
+        "focus": "low_precision",
+        "next_agent": "linear_agent",
+        "settings": {
+          "C": 0.3,
+          "class_weight": null
+        }
+      },
+      "scoring_criteria": "1 point if the real routing functions choose the expected action; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "focus": "low_precision",
+        "next_agent": "linear_agent",
+        "model_spec": {
+          "family": "logistic_regression",
+          "C": 0.3,
+          "class_weight": null
+        },
+        "stop_reason": null,
+        "controlled_input": true
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "route_low_recall",
+      "input": {
+        "plan": {
+          "recall_gate": 0.7,
+          "retry_limit": 1,
+          "precision_gate": 0.75,
+          "second_on_low_recall": "linear_agent",
+          "first_agent": "forest_agent",
+          "second_on_low_precision": "linear_agent"
+        },
+        "validation_metrics": {
+          "precision": 0.9,
+          "recall": 0.1
+        }
+      },
+      "expected": {
+        "focus": "low_recall",
+        "next_agent": "linear_agent",
+        "settings": {
+          "C": 3.0,
+          "class_weight": "balanced"
+        }
+      },
+      "scoring_criteria": "1 point if the real routing functions choose the expected action; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "focus": "low_recall",
+        "next_agent": "linear_agent",
+        "model_spec": {
+          "family": "logistic_regression",
+          "C": 3.0,
+          "class_weight": "balanced"
+        },
+        "stop_reason": null,
+        "controlled_input": true
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "route_quality_pass",
+      "input": {
+        "plan": {
+          "recall_gate": 0.7,
+          "retry_limit": 1,
+          "precision_gate": 0.75,
+          "second_on_low_recall": "linear_agent",
+          "first_agent": "forest_agent",
+          "second_on_low_precision": "linear_agent"
+        },
+        "validation_metrics": {
+          "precision": 0.9,
+          "recall": 0.9
+        }
+      },
+      "expected": {
+        "focus": "quality_pass",
+        "next_agent": "final_test",
+        "settings": null
+      },
+      "scoring_criteria": "1 point if the real routing functions choose the expected action; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "focus": "quality_pass",
+        "next_agent": "final_test",
+        "model_spec": null,
+        "stop_reason": "quality_gate_met",
+        "controlled_input": true
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "feedback_changes_action",
+      "input": "Three controlled validation outcomes under one saved plan",
+      "expected": "Low precision and low recall change model settings; quality pass stops early",
+      "scoring_criteria": "1 point if the three actual actions differ as specified; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "actions": [
+          {
+            "focus": "low_precision",
+            "next_agent": "linear_agent",
+            "model_spec": {
+              "family": "logistic_regression",
+              "C": 0.3,
+              "class_weight": null
+            },
+            "stop_reason": null,
+            "controlled_input": true
+          },
+          {
+            "focus": "low_recall",
+            "next_agent": "linear_agent",
+            "model_spec": {
+              "family": "logistic_regression",
+              "C": 3.0,
+              "class_weight": "balanced"
+            },
+            "stop_reason": null,
+            "controlled_input": true
+          },
+          {
+            "focus": "quality_pass",
+            "next_agent": "final_test",
+            "model_spec": null,
+            "stop_reason": "quality_gate_met",
+            "controlled_input": true
+          }
+        ]
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "bounded_retry",
+      "input": "Controlled first-attempt OSError in retry probe",
+      "expected": "One logged retry and success on the second attempt",
+      "scoring_criteria": "1 point for two attempts, one retry event, and recovery; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "attempts": 2,
+        "retry_events": 1,
+        "result": "recovered",
+        "test_only_fault": true
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "finite_stop_sealed_test",
+      "input": "Adaptive run event timestamps",
+      "expected": "At most two model fits, final selection, one test opening, then stop",
+      "scoring_criteria": "1 point if order and counts hold; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "model_fits": 2,
+        "test_opens": 1,
+        "stop_reason": "two_experiment_budget"
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "final_output_quality",
+      "input": "One adaptive holdout evaluation",
+      "expected": "F1 at least 0.30 and AP at least the test positive prevalence",
+      "scoring_criteria": "1 point if both measured thresholds hold; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "f1": 0.3508771929824561,
+        "ap": 0.397298213602164,
+        "positive_prevalence": 0.1346153846153846,
+        "confusion_matrix": [
+          [
+            57,
+            33
+          ],
+          [
+            4,
+            10
+          ]
+        ]
+      },
+      "score": 1,
+      "passed": true
+    },
+    {
+      "id": "baseline_feedback",
+      "input": "Fixed DAG feedback and simple agent feedback files",
+      "expected": "Fixed selection uses validation; simple loop revises then stops",
+      "scoring_criteria": "1 point if both feedback paths are present; otherwise 0",
+      "pass_threshold": 1,
+      "actual": {
+        "fixed_decision": "select highest validation F1; AP breaks ties",
+        "simple_routes": [
+          "revise",
+          "finish"
+        ]
+      },
+      "score": 1,
+      "passed": true
+    }
+  ],
+  "passed": 15,
+  "total": 15,
+  "all_passed": true
+}
