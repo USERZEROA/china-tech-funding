@@ -1,0 +1,9 @@
+{
+  "before_rows": 1428,
+  "after_rows": 1428,
+  "macro_rows": 26,
+  "matched_country_year_rows": 1428,
+  "complete_macro_rows": 1428,
+  "complete_macro_coverage": 1.0,
+  "missing_macro_event_keys": []
+}

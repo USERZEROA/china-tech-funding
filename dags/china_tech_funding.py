@@ -1,7 +1,8 @@
 """Scheduled two-source funding pipeline for IDS706 Week 11."""
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 
+import pendulum
 from airflow.decorators import dag, task
 
 from src import pipeline
@@ -9,8 +10,8 @@ from src import pipeline
 
 @dag(
     dag_id="china_tech_funding",
-    start_date=datetime(2026, 11, 1),
-    schedule="0 9 * * 1",
+    start_date=pendulum.datetime(2026, 11, 1, 0, 0, tz="America/New_York"),
+    schedule="33 0 * * 0",
     catchup=False,
     max_active_runs=1,
     default_args={"retries": 2, "retry_delay": timedelta(minutes=2)},

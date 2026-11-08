@@ -13,7 +13,7 @@ docker compose up --build -d
 docker compose exec airflow-webserver airflow dags trigger china_tech_funding
 ```
 
-Open <http://localhost:8088> and sign in with `admin` / `admin`. The DAG is scheduled for Monday at 09:00 UTC. A manual run succeeded; an automatic scheduled run has not yet been observed. The two source branches ran in parallel. Each run saves inputs, SHA-256 hashes, cleaning and merge checks, database readback, SQL analysis, and task times under `artifacts/runs/<run_id>/`.
+Open <http://localhost:8088> and sign in with `admin` / `admin`. The DAG runs every Sunday at 00:33 in the `America/New_York` time zone. The [November 8 scheduled run](artifacts/runs/scheduled__2026-11-01T04_33_00_00_00/run_summary.json) succeeded at 00:33 EST. The two source branches ran in parallel. Each run saves inputs, SHA-256 hashes, cleaning and merge checks, database readback, SQL analysis, and task times under `artifacts/runs/<run_id>/`.
 
 The pipeline retains original investor rows in PostgreSQL, groups plausible funding events, and quarantines conflicting candidates. Zero amounts are treated as undisclosed. The load replaces one validated snapshot in a transaction, so another run does not add duplicate rows.
 
@@ -55,6 +55,10 @@ Open <http://localhost:8090/bonus> for the workflow graph, evaluation cases, and
 ### Airflow graph
 
 ![Airflow DAG graph](screenshots/02_airflow_graph.png)
+
+### Scheduled Airflow run
+
+![Successful scheduled Airflow run](screenshots/07_airflow_scheduled.png)
 
 ### Agent graph
 

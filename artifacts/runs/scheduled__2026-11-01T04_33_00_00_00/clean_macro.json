@@ -1,0 +1,15 @@
+{
+  "run_id": "scheduled__2026-11-01T04:33:00+00:00",
+  "started_utc": "2026-11-08T05:33:02.474446+00:00",
+  "ended_utc": "2026-11-08T05:33:02.507555+00:00",
+  "status": "success",
+  "result": {
+    "path": "/opt/airflow/project/artifacts/runs/scheduled__2026-11-01T04_33_00_00_00/macro.csv",
+    "rows": 26,
+    "unique_country_year": true,
+    "missing_values": {
+      "gdp_growth": 0,
+      "gdp_per_capita": 0
+    }
+  }
+}
