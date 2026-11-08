@@ -1,0 +1,8 @@
+{
+  "family": "random_forest",
+  "n_estimators": 200,
+  "max_depth": 6,
+  "min_samples_leaf": 5,
+  "class_weight": "balanced_subsample",
+  "reason": "Validation feedback requested improve precision"
+}

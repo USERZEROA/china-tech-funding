@@ -1,2 +1,3 @@
 artifacts/runs/**/source/* -text
 screenshots/*.png binary
+artifacts/agent_runs/**/*.joblib binary

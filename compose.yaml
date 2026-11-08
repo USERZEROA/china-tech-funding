@@ -56,6 +56,23 @@ services:
     volumes: *airflow_volumes
     command: scheduler
 
+  agent-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      FUNDING_DATABASE_URL: postgresql://airflow:airflow@postgres/airflow
+      PROJECT_ROOT: /app
+      PYTHONPATH: /app
+    volumes:
+      - .:/app
+    command: python -m src.agent_web
+    ports:
+      - "8090:8090"
+
 
 volumes:
   pgdata:

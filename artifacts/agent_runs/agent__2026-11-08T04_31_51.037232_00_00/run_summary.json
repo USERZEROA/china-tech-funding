@@ -1,0 +1,132 @@
+{
+  "run_id": "agent__2026-11-08T04:31:51.037232+00:00",
+  "status": "success",
+  "source_run_id": "manual__2026-11-08T04:19:45+00:00",
+  "source_hashes": {
+    "Documentation.csv": "9dc5948e10746a6b097d04fe325c1f518e75ff6ac2717e2bb39f12418193d4c5",
+    "Dataset.csv": "a1af2ace102b8a1eab2804e9dd9871b3a2427330ac54a09805a0e48f381aed6a",
+    "Codebook.csv": "f462496c708c173099a470f7ac830ab2abf7faa26315da638fb23a5fe114f43a",
+    "gdp_growth": "3021a1677aaf1966b89d0ae00c9a16a7d2742564cf2fa075759350f11e543e15",
+    "gdp_per_capita": "7bb4d51eba68c16ee95a7c2ef353a6a254b97fbec6cea0e1310ef2f4637f21c7"
+  },
+  "data_fingerprint": "cd9326054146aaedd02e282a0b2b5d4e4d9af3e34d62ac4e83c42f96f117fcfc",
+  "eligible": {
+    "rows": 519,
+    "positive": 85,
+    "negative": 434
+  },
+  "features": [
+    "year",
+    "gdp_growth",
+    "gdp_per_capita",
+    "round",
+    "sector"
+  ],
+  "excluded_from_features": [
+    "amount_usd",
+    "company",
+    "event_key"
+  ],
+  "split": {
+    "train": {
+      "rows": 315,
+      "positive": 56,
+      "negative": 259
+    },
+    "validation": {
+      "rows": 100,
+      "positive": 15,
+      "negative": 85
+    },
+    "test": {
+      "rows": 104,
+      "positive": 14,
+      "negative": 90
+    }
+  },
+  "company_group_overlap": 0,
+  "experiments": [
+    {
+      "cycle": 1,
+      "spec": {
+        "family": "logistic_regression",
+        "C": 1.0,
+        "class_weight": "balanced",
+        "reason": "Start with a regularized linear baseline"
+      },
+      "model_path": "/app/artifacts/agent_runs/agent__2026-11-08T04_31_51.037232_00_00/model_01.joblib",
+      "validation": {
+        "f1": 0.358974358974359,
+        "precision": 0.2916666666666667,
+        "recall": 0.4666666666666667,
+        "average_precision": 0.3645579387997322,
+        "confusion_matrix": [
+          [
+            68,
+            17
+          ],
+          [
+            8,
+            7
+          ]
+        ],
+        "threshold": 0.5,
+        "rows": 100,
+        "positive": 15
+      }
+    },
+    {
+      "cycle": 2,
+      "spec": {
+        "family": "random_forest",
+        "n_estimators": 200,
+        "max_depth": 6,
+        "min_samples_leaf": 5,
+        "class_weight": "balanced_subsample",
+        "reason": "Validation feedback requested improve precision"
+      },
+      "model_path": "/app/artifacts/agent_runs/agent__2026-11-08T04_31_51.037232_00_00/model_02.joblib",
+      "validation": {
+        "f1": 0.36,
+        "precision": 0.2571428571428571,
+        "recall": 0.6,
+        "average_precision": 0.28286369292956376,
+        "confusion_matrix": [
+          [
+            59,
+            26
+          ],
+          [
+            6,
+            9
+          ]
+        ],
+        "threshold": 0.5,
+        "rows": 100,
+        "positive": 15
+      }
+    }
+  ],
+  "best_cycle": 2,
+  "stop_reason": "two_experiment_budget",
+  "test_metrics": {
+    "f1": 0.3508771929824561,
+    "precision": 0.23255813953488372,
+    "recall": 0.7142857142857143,
+    "average_precision": 0.397298213602164,
+    "confusion_matrix": [
+      [
+        57,
+        33
+      ],
+      [
+        4,
+        10
+      ]
+    ],
+    "threshold": 0.5,
+    "rows": 104,
+    "positive": 14
+  },
+  "ended_utc": "2026-11-08T04:31:51.554444+00:00"
+}

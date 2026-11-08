@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": "data_steward",
+      "title": "Data Steward",
+      "role": "SQL eligibility and frozen company split",
+      "x": 30,
+      "y": 100
+    },
+    {
+      "id": "hypothesis_agent",
+      "title": "Hypothesis Agent",
+      "role": "Choose experiment from feedback",
+      "x": 255,
+      "y": 100
+    },
+    {
+      "id": "model_engineer",
+      "title": "Model Engineer",
+      "role": "Fit on training data only",
+      "x": 480,
+      "y": 100
+    },
+    {
+      "id": "evaluation_agent",
+      "title": "Evaluation Agent",
+      "role": "Score validation data",
+      "x": 705,
+      "y": 100
+    },
+    {
+      "id": "judge_agent",
+      "title": "Judge Agent",
+      "role": "Compare validation and route",
+      "x": 930,
+      "y": 100
+    },
+    {
+      "id": "final_test",
+      "title": "Final Test",
+      "role": "Open holdout once, then stop",
+      "x": 1155,
+      "y": 100
+    }
+  ],
+  "edges": [
+    {
+      "source": "data_steward",
+      "target": "hypothesis_agent"
+    },
+    {
+      "source": "hypothesis_agent",
+      "target": "model_engineer"
+    },
+    {
+      "source": "model_engineer",
+      "target": "evaluation_agent"
+    },
+    {
+      "source": "evaluation_agent",
+      "target": "judge_agent"
+    },
+    {
+      "source": "judge_agent",
+      "target": "hypothesis_agent",
+      "route": "revise"
+    },
+    {
+      "source": "judge_agent",
+      "target": "final_test",
+      "route": "finish"
+    }
+  ],
+  "entry": "data_steward",
+  "exit": "final_test"
+}

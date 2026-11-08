@@ -1,0 +1,6 @@
+{
+  "family": "logistic_regression",
+  "C": 1.0,
+  "class_weight": "balanced",
+  "reason": "Start with a regularized linear baseline"
+}
