@@ -1,0 +1,15 @@
+{
+  "run_id": "manual__2026-11-08T03:55:39+00:00",
+  "started_utc": "2026-11-08T03:55:41.890493+00:00",
+  "ended_utc": "2026-11-08T03:55:41.918550+00:00",
+  "status": "success",
+  "result": {
+    "path": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_55_39_00_00/macro.csv",
+    "rows": 26,
+    "unique_country_year": true,
+    "missing_values": {
+      "gdp_growth": 0,
+      "gdp_per_capita": 0
+    }
+  }
+}

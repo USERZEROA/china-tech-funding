@@ -1,0 +1,33 @@
+{
+  "run_id": "manual__2026-11-08T03:54:45+00:00",
+  "started_utc": "2026-11-08T03:54:46.566405+00:00",
+  "ended_utc": "2026-11-08T03:54:49.990172+00:00",
+  "status": "success",
+  "result": {
+    "record": "https://zenodo.org/api/records/19194192",
+    "record_sha256": "d580d5dd903ef8ac165a860f124fcc528f152da98a5dea993658ef86a66a4191",
+    "files": {
+      "Documentation.csv": {
+        "path": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_54_45_00_00/source/Documentation.csv",
+        "url": "https://zenodo.org/api/records/19194192/files/Chinese%20Tech%20Companies%20Investments%201999-2024%20-%20Documentation.csv/content",
+        "sha256": "9dc5948e10746a6b097d04fe325c1f518e75ff6ac2717e2bb39f12418193d4c5",
+        "md5": "1384f2b1eb133fdb5fb5a95efad17df6",
+        "bytes": 4229
+      },
+      "Dataset.csv": {
+        "path": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_54_45_00_00/source/Dataset.csv",
+        "url": "https://zenodo.org/api/records/19194192/files/Chinese%20Tech%20Companies%20Investments%201999-2024%20-%20Dataset.csv/content",
+        "sha256": "a1af2ace102b8a1eab2804e9dd9871b3a2427330ac54a09805a0e48f381aed6a",
+        "md5": "6d7e965de43b2a9a2585ab3696d8f8a5",
+        "bytes": 1071264
+      },
+      "Codebook.csv": {
+        "path": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_54_45_00_00/source/Codebook.csv",
+        "url": "https://zenodo.org/api/records/19194192/files/Chinese%20Tech%20Companies%20Investments%201999-2024%20-%20Codebook.csv/content",
+        "sha256": "f462496c708c173099a470f7ac830ab2abf7faa26315da638fb23a5fe114f43a",
+        "md5": "608a32b0e5824be64042f5a614a2711e",
+        "bytes": 1300
+      }
+    }
+  }
+}

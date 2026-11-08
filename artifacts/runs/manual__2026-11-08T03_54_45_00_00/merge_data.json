@@ -1,0 +1,20 @@
+{
+  "run_id": "manual__2026-11-08T03:54:45+00:00",
+  "started_utc": "2026-11-08T03:54:52.684764+00:00",
+  "ended_utc": "2026-11-08T03:54:52.730391+00:00",
+  "status": "success",
+  "result": {
+    "path": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_54_45_00_00/merged_events.csv",
+    "source_rows": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_54_45_00_00/source_rows.csv",
+    "macro": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_54_45_00_00/macro.csv",
+    "report": {
+      "before_rows": 1461,
+      "after_rows": 1461,
+      "macro_rows": 26,
+      "matched_country_year_rows": 1461,
+      "complete_macro_rows": 1461,
+      "complete_macro_coverage": 1.0,
+      "missing_macro_event_keys": []
+    }
+  }
+}

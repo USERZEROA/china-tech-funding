@@ -1,0 +1,8 @@
+{
+  "macro_rows": 26,
+  "event_rows": 1461,
+  "source_rows": 1532,
+  "prior_event_rows": 1461,
+  "key_readback_match": true,
+  "idempotence": "snapshot replace in one transaction"
+}

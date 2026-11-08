@@ -1,0 +1,6 @@
+{
+  "macro_rows": 26,
+  "event_rows": 1461,
+  "source_rows": 1532,
+  "idempotence": "snapshot replace in one transaction"
+}

@@ -1,0 +1,122 @@
+{
+  "source": "PostgreSQL SQL queries",
+  "total_events": 1460,
+  "by_type": [
+    {
+      "type": "acquisition",
+      "events": 119,
+      "disclosed": 35,
+      "ai_events": 17,
+      "at_least_100m": 15
+    },
+    {
+      "type": "investment",
+      "events": 1341,
+      "disclosed": 536,
+      "ai_events": 379,
+      "at_least_100m": 92
+    }
+  ],
+  "investment_by_year": [
+    {
+      "year": 2000,
+      "events": 1,
+      "disclosed": 0
+    },
+    {
+      "year": 2006,
+      "events": 1,
+      "disclosed": 0
+    },
+    {
+      "year": 2007,
+      "events": 3,
+      "disclosed": 1
+    },
+    {
+      "year": 2008,
+      "events": 1,
+      "disclosed": 1
+    },
+    {
+      "year": 2009,
+      "events": 1,
+      "disclosed": 0
+    },
+    {
+      "year": 2010,
+      "events": 6,
+      "disclosed": 2
+    },
+    {
+      "year": 2011,
+      "events": 8,
+      "disclosed": 5
+    },
+    {
+      "year": 2012,
+      "events": 13,
+      "disclosed": 4
+    },
+    {
+      "year": 2013,
+      "events": 27,
+      "disclosed": 11
+    },
+    {
+      "year": 2014,
+      "events": 47,
+      "disclosed": 22
+    },
+    {
+      "year": 2015,
+      "events": 89,
+      "disclosed": 42
+    },
+    {
+      "year": 2016,
+      "events": 111,
+      "disclosed": 38
+    },
+    {
+      "year": 2017,
+      "events": 140,
+      "disclosed": 68
+    },
+    {
+      "year": 2018,
+      "events": 184,
+      "disclosed": 84
+    },
+    {
+      "year": 2019,
+      "events": 143,
+      "disclosed": 46
+    },
+    {
+      "year": 2020,
+      "events": 130,
+      "disclosed": 52
+    },
+    {
+      "year": 2021,
+      "events": 255,
+      "disclosed": 97
+    },
+    {
+      "year": 2022,
+      "events": 93,
+      "disclosed": 32
+    },
+    {
+      "year": 2023,
+      "events": 64,
+      "disclosed": 22
+    },
+    {
+      "year": 2024,
+      "events": 24,
+      "disclosed": 9
+    }
+  ]
+}

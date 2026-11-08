@@ -1,0 +1,25 @@
+{
+  "run_id": "manual__2026-11-08T03:55:39+00:00",
+  "started_utc": "2026-11-08T03:55:46.086344+00:00",
+  "ended_utc": "2026-11-08T03:55:46.457912+00:00",
+  "status": "success",
+  "result": {
+    "events": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_55_39_00_00/events.csv",
+    "source_rows": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_55_39_00_00/source_rows.csv",
+    "report": {
+      "source_rows": 6741,
+      "selected_rows": 1532,
+      "selected_investment_rows": 1411,
+      "selected_ai_rows": 427,
+      "accepted_events": 1461,
+      "accepted_investment_events": 1342,
+      "accepted_ai_events": 396,
+      "disclosed_events": 572,
+      "quarantined_rows": 23,
+      "quarantine_reasons": {
+        "conflicting_sectors": 13,
+        "conflicting_amounts": 10
+      }
+    }
+  }
+}

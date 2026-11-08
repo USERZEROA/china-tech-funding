@@ -1,0 +1,128 @@
+{
+  "run_id": "manual__2026-11-08T04:19:45+00:00",
+  "started_utc": "2026-11-08T04:19:53.888439+00:00",
+  "ended_utc": "2026-11-08T04:19:53.900809+00:00",
+  "status": "success",
+  "result": {
+    "source": "PostgreSQL SQL queries",
+    "total_events": 1428,
+    "by_type": [
+      {
+        "type": "acquisition",
+        "events": 118,
+        "disclosed": 35,
+        "ai_events": 17,
+        "at_least_100m": 15
+      },
+      {
+        "type": "investment",
+        "events": 1310,
+        "disclosed": 519,
+        "ai_events": 365,
+        "at_least_100m": 85
+      }
+    ],
+    "investment_by_year": [
+      {
+        "year": 2000,
+        "events": 1,
+        "disclosed": 0
+      },
+      {
+        "year": 2006,
+        "events": 1,
+        "disclosed": 0
+      },
+      {
+        "year": 2007,
+        "events": 3,
+        "disclosed": 1
+      },
+      {
+        "year": 2008,
+        "events": 1,
+        "disclosed": 1
+      },
+      {
+        "year": 2009,
+        "events": 1,
+        "disclosed": 0
+      },
+      {
+        "year": 2010,
+        "events": 6,
+        "disclosed": 2
+      },
+      {
+        "year": 2011,
+        "events": 8,
+        "disclosed": 5
+      },
+      {
+        "year": 2012,
+        "events": 13,
+        "disclosed": 4
+      },
+      {
+        "year": 2013,
+        "events": 27,
+        "disclosed": 11
+      },
+      {
+        "year": 2014,
+        "events": 46,
+        "disclosed": 21
+      },
+      {
+        "year": 2015,
+        "events": 87,
+        "disclosed": 41
+      },
+      {
+        "year": 2016,
+        "events": 111,
+        "disclosed": 38
+      },
+      {
+        "year": 2017,
+        "events": 135,
+        "disclosed": 65
+      },
+      {
+        "year": 2018,
+        "events": 181,
+        "disclosed": 83
+      },
+      {
+        "year": 2019,
+        "events": 138,
+        "disclosed": 43
+      },
+      {
+        "year": 2020,
+        "events": 127,
+        "disclosed": 49
+      },
+      {
+        "year": 2021,
+        "events": 245,
+        "disclosed": 93
+      },
+      {
+        "year": 2022,
+        "events": 91,
+        "disclosed": 31
+      },
+      {
+        "year": 2023,
+        "events": 64,
+        "disclosed": 22
+      },
+      {
+        "year": 2024,
+        "events": 24,
+        "disclosed": 9
+      }
+    ]
+  }
+}

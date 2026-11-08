@@ -1,0 +1,210 @@
+{
+  "run_id": "manual__2026-11-08T03:55:39+00:00",
+  "source_hashes": {
+    "Documentation.csv": "9dc5948e10746a6b097d04fe325c1f518e75ff6ac2717e2bb39f12418193d4c5",
+    "Dataset.csv": "a1af2ace102b8a1eab2804e9dd9871b3a2427330ac54a09805a0e48f381aed6a",
+    "Codebook.csv": "f462496c708c173099a470f7ac830ab2abf7faa26315da638fb23a5fe114f43a",
+    "gdp_growth": "3021a1677aaf1966b89d0ae00c9a16a7d2742564cf2fa075759350f11e543e15",
+    "gdp_per_capita": "7bb4d51eba68c16ee95a7c2ef353a6a254b97fbec6cea0e1310ef2f4637f21c7"
+  },
+  "cleaning": {
+    "source_rows": 6741,
+    "selected_rows": 1532,
+    "selected_investment_rows": 1411,
+    "selected_ai_rows": 427,
+    "accepted_events": 1461,
+    "accepted_investment_events": 1342,
+    "accepted_ai_events": 396,
+    "disclosed_events": 572,
+    "quarantined_rows": 23,
+    "quarantine_reasons": {
+      "conflicting_sectors": 13,
+      "conflicting_amounts": 10
+    }
+  },
+  "macro": {
+    "rows": 26,
+    "unique_country_year": true,
+    "missing_values": {
+      "gdp_growth": 0,
+      "gdp_per_capita": 0
+    }
+  },
+  "merge": {
+    "before_rows": 1461,
+    "after_rows": 1461,
+    "macro_rows": 26,
+    "matched_country_year_rows": 1461,
+    "complete_macro_rows": 1461,
+    "complete_macro_coverage": 1.0,
+    "missing_macro_event_keys": []
+  },
+  "database": {
+    "macro_rows": 26,
+    "event_rows": 1461,
+    "source_rows": 1532,
+    "prior_event_rows": 1461,
+    "key_readback_match": true,
+    "idempotence": "snapshot replace in one transaction"
+  },
+  "analysis": {
+    "source": "PostgreSQL SQL queries",
+    "total_events": 1461,
+    "by_type": [
+      {
+        "type": "acquisition",
+        "events": 119,
+        "disclosed": 35,
+        "ai_events": 17,
+        "at_least_100m": 15
+      },
+      {
+        "type": "investment",
+        "events": 1342,
+        "disclosed": 537,
+        "ai_events": 379,
+        "at_least_100m": 92
+      }
+    ],
+    "investment_by_year": [
+      {
+        "year": 2000,
+        "events": 1,
+        "disclosed": 0
+      },
+      {
+        "year": 2006,
+        "events": 1,
+        "disclosed": 0
+      },
+      {
+        "year": 2007,
+        "events": 3,
+        "disclosed": 1
+      },
+      {
+        "year": 2008,
+        "events": 1,
+        "disclosed": 1
+      },
+      {
+        "year": 2009,
+        "events": 1,
+        "disclosed": 0
+      },
+      {
+        "year": 2010,
+        "events": 6,
+        "disclosed": 2
+      },
+      {
+        "year": 2011,
+        "events": 8,
+        "disclosed": 5
+      },
+      {
+        "year": 2012,
+        "events": 13,
+        "disclosed": 4
+      },
+      {
+        "year": 2013,
+        "events": 27,
+        "disclosed": 11
+      },
+      {
+        "year": 2014,
+        "events": 47,
+        "disclosed": 22
+      },
+      {
+        "year": 2015,
+        "events": 89,
+        "disclosed": 42
+      },
+      {
+        "year": 2016,
+        "events": 111,
+        "disclosed": 38
+      },
+      {
+        "year": 2017,
+        "events": 140,
+        "disclosed": 68
+      },
+      {
+        "year": 2018,
+        "events": 184,
+        "disclosed": 84
+      },
+      {
+        "year": 2019,
+        "events": 143,
+        "disclosed": 46
+      },
+      {
+        "year": 2020,
+        "events": 130,
+        "disclosed": 52
+      },
+      {
+        "year": 2021,
+        "events": 256,
+        "disclosed": 98
+      },
+      {
+        "year": 2022,
+        "events": 93,
+        "disclosed": 32
+      },
+      {
+        "year": 2023,
+        "events": 64,
+        "disclosed": 22
+      },
+      {
+        "year": 2024,
+        "events": 24,
+        "disclosed": 9
+      }
+    ]
+  },
+  "fetch_tasks_overlapped": true,
+  "task_times": {
+    "fetch_zenodo": {
+      "started_utc": "2026-11-08T03:55:40.986528+00:00",
+      "ended_utc": "2026-11-08T03:55:44.871573+00:00",
+      "status": "success"
+    },
+    "fetch_macro": {
+      "started_utc": "2026-11-08T03:55:40.984253+00:00",
+      "ended_utc": "2026-11-08T03:55:41.189637+00:00",
+      "status": "success"
+    },
+    "clean_investments": {
+      "started_utc": "2026-11-08T03:55:46.086344+00:00",
+      "ended_utc": "2026-11-08T03:55:46.457912+00:00",
+      "status": "success"
+    },
+    "clean_macro": {
+      "started_utc": "2026-11-08T03:55:41.890493+00:00",
+      "ended_utc": "2026-11-08T03:55:41.918550+00:00",
+      "status": "success"
+    },
+    "merge_data": {
+      "started_utc": "2026-11-08T03:55:47.050430+00:00",
+      "ended_utc": "2026-11-08T03:55:47.100100+00:00",
+      "status": "success"
+    },
+    "load_postgres": {
+      "started_utc": "2026-11-08T03:55:48.080379+00:00",
+      "ended_utc": "2026-11-08T03:55:48.210670+00:00",
+      "status": "success"
+    },
+    "analyze_from_sql": {
+      "started_utc": "2026-11-08T03:55:49.199090+00:00",
+      "ended_utc": "2026-11-08T03:55:50.800005+00:00",
+      "status": "success"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+,
+,Overview
+,
+,"This Dataset draws on three financial data platforms — Tianyancha, IT Juzi, and Crunchbase — to compile investment and acquisition records by eight Chinese technology firms: Alibaba, Baidu, ByteDance, Huawei, JD, Meituan, Tencent, and Xiaomi, covering the period from 1999 to 2024.
+
+Each row represents a unique investment or acquisition involving one of the companies of interest. If multiple companies from the set of eight participated in the same financing round, each may appear as a separate entry, depending on how the event was recorded in the source platforms.
+
+The reported amounts reflect the total capital raised in the financing round, which may include contributions from subsidiaries, private investors, or other participants, rather than the portion attributable to the individual company.
+
+Further details on data labels and standardisation are provided in the Codebook.
+
+This dataset was developed as part of DIGISILK, a research project funded by the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation programme, Grant agreement No. 850891, P.I. Dr. Elisa Oreglia."
+,
+,
+,Methodology
+,
+,"Business-data platforms were selected based on literature on Chinese corporate investments, excluding those with only industry aggregates, limited metadata, sparse coverage of outbound investments, or high subscription fees.
+
+Chinese tech firms with foreign operations were identified using DIGISILK fieldwork and media rankings (e.g., Fortune China Top 10), focusing on commercial, user-facing companies and excluding hardware manufacturers and telecom operators.
+
+Data on investment and acquisition records of the eight Chinese technology companies were manually retrieved from Tianyancha (50%), IT Juzi (32%), and Crunchbase (18%). 
+
+Consolidation of unique transactions was achieved by matching acquisitions and investments across finance platforms, identifying the same investor–investee pair occurring within a two-year window. Where possible, records were also aligned based on the funding round and investors. In cases where reported amounts or dates differed, we used the average of the disclosed amounts and the earliest reported transaction year.
+
+To harmonize naming conventions, investee company names in Chinese were replaced with their official international equivalents or pinyin transliterations and verified against official websites, business data platforms, and news sources.
+
+To ensure consistency, amounts in different currencies were converted to US dollars using Google Finance’s average annual exchange rates for each year. Non-disclosed or vague amounts (e.g., “tens of thousands” or “millions”) were marked as 0, while values with qualifiers (e.g., “nearly 100,000”) were recorded using the stated absolute number.
+
+For consolidated transactions, industry and sector labels were harmonized across platforms using Tianyancha as the primary source and IT Juzi as a supplement, with locations for companies unique to Crunchbase retrieved manually. "
+,
+,Limitations
+,
+,"Finance databases differ in data availability, metadata structure, labelling conventions, and methodologies for retrieving investment records, leading to variations in reported amounts. 
+
+Many companies have multiple names in Chinese, their transliteration, and English, making differentiation challenging. Naming inconsistencies across platforms like IT Juzi and Tianyancha were addressed through standardisation efforts.
+
+Some investee companies may be missing from the database if they were acquired or became subsidiaries of larger companies and rebranded. As a result, these companies no longer appear independently, leading to the underrepresentation of certain countries or markets in the dataset.
+
+Different platforms often label the same investee company under different sectors, which can lead to inconsistencies in how industries are categorised in the dataset."
+,
+,
+,Contributing
+,
+,"If you have suggestions for additional data sources, corrections, or new information on investments and acquisitions, please feel free to reach out via email at digisilk@kcl.ac.uk 
+
+
+
+
+
+
+"
+,
+,Change log
+,
+,23/03/26 - Publication

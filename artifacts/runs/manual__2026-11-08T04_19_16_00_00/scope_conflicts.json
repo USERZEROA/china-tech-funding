@@ -1,0 +1,625 @@
+[
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      441
+    ],
+    "peer_source_rows": [
+      442
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 442,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "70,979,447"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      537
+    ],
+    "peer_source_rows": [
+      538
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 538,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      712
+    ],
+    "peer_source_rows": [
+      711
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 711,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      1569
+    ],
+    "peer_source_rows": [
+      1570
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 1570,
+        "country": "China",
+        "industry": "Media & Entertainment",
+        "sector": "Social Media",
+        "amount_usd_raw": "300,000,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      1575,
+      1576
+    ],
+    "peer_source_rows": [
+      1574
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 1574,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "50,000,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      1624
+    ],
+    "peer_source_rows": [
+      1622
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 1622,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "27,458,200"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      1773
+    ],
+    "peer_source_rows": [
+      1771
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 1771,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Logistics and Transportation",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      1856
+    ],
+    "peer_source_rows": [
+      1855
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 1855,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Automotive and Transportation",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      2145,
+      2147
+    ],
+    "peer_source_rows": [
+      2146
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 2146,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "70,000,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      2394,
+      2395
+    ],
+    "peer_source_rows": [
+      2396
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 2396,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "270,000,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      2433
+    ],
+    "peer_source_rows": [
+      2431,
+      2432
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 2431,
+        "country": "China",
+        "industry": "Finance",
+        "sector": "Financial Services",
+        "amount_usd_raw": "10,000,000"
+      },
+      {
+        "source_row": 2432,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "10,000,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      2796
+    ],
+    "peer_source_rows": [
+      2798
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 2798,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      3130
+    ],
+    "peer_source_rows": [
+      3129
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 3129,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "13,729,100"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      3132
+    ],
+    "peer_source_rows": [
+      3134
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 3134,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "82,374,600"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      3262
+    ],
+    "peer_source_rows": [
+      3263
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 3263,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      3454
+    ],
+    "peer_source_rows": [
+      3455
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 3455,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "274,582,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      3457
+    ],
+    "peer_source_rows": [
+      3458
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 3458,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "300,000,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      3509
+    ],
+    "peer_source_rows": [
+      3510
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 3510,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Automotive and Transportation",
+        "amount_usd_raw": "120,000,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      3511
+    ],
+    "peer_source_rows": [
+      3512
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 3512,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Automotive and Transportation",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      3555
+    ],
+    "peer_source_rows": [
+      3556
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 3556,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "274,582,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      4379
+    ],
+    "peer_source_rows": [
+      4380
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 4380,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      4749,
+      4751
+    ],
+    "peer_source_rows": [
+      4750
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 4750,
+        "country": "China",
+        "industry": "Finance",
+        "sector": "Financial Services",
+        "amount_usd_raw": "73,000,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      4776
+    ],
+    "peer_source_rows": [
+      4775
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 4775,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "17,847,830"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      4778
+    ],
+    "peer_source_rows": [
+      4777
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 4777,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      5003
+    ],
+    "peer_source_rows": [
+      5002
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 5002,
+        "country": "China",
+        "industry": "Healthcare & Lifestyle Services",
+        "sector": "Lifestyle Services",
+        "amount_usd_raw": "28,229,100"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_country",
+    "selected_source_rows": [
+      5244
+    ],
+    "peer_source_rows": [
+      5243
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 5243,
+        "country": "United States",
+        "industry": "Technology & Software",
+        "sector": "Enterprise Solutions",
+        "amount_usd_raw": "31,000,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      5796,
+      5797
+    ],
+    "peer_source_rows": [
+      5798
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 5798,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Manufacturing",
+        "amount_usd_raw": "45,093,650"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      5952
+    ],
+    "peer_source_rows": [
+      5951
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 5951,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      6086
+    ],
+    "peer_source_rows": [
+      6084,
+      6085
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 6084,
+        "country": "China",
+        "industry": "Healthcare & Lifestyle Services",
+        "sector": "Healthcare",
+        "amount_usd_raw": "318,800,000"
+      },
+      {
+        "source_row": 6085,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "318,800,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      6204
+    ],
+    "peer_source_rows": [
+      6203
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 6203,
+        "country": "China",
+        "industry": "Commerce & Trade",
+        "sector": "E-commerce",
+        "amount_usd_raw": "20,000,000"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      6429
+    ],
+    "peer_source_rows": [
+      6428
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 6428,
+        "country": "China",
+        "industry": "N/A",
+        "sector": "N/A",
+        "amount_usd_raw": "0"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      6617
+    ],
+    "peer_source_rows": [
+      6616
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 6616,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Automotive and Transportation",
+        "amount_usd_raw": "8,237,460"
+      }
+    ]
+  },
+  {
+    "reason": "cross_scope_industry",
+    "selected_source_rows": [
+      6620
+    ],
+    "peer_source_rows": [
+      6618,
+      6619
+    ],
+    "peer_classifications": [
+      {
+        "source_row": 6618,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Automotive and Transportation",
+        "amount_usd_raw": "20,593,650"
+      },
+      {
+        "source_row": 6619,
+        "country": "China",
+        "industry": "Resource & Production Industries",
+        "sector": "Automotive and Transportation",
+        "amount_usd_raw": "150,000,000"
+      }
+    ]
+  }
+]

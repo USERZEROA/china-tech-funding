@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: postgres:16.8
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  airflow-init:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment: &airflow_env
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__WEBSERVER__SECRET_KEY: classroom-local-key
+      FUNDING_DATABASE_URL: postgresql://airflow:airflow@postgres/airflow
+      PYTHONPATH: /opt/airflow/project
+      PROJECT_ROOT: /opt/airflow/project
+    volumes: &airflow_volumes
+      - .:/opt/airflow/project
+      - ./dags:/opt/airflow/dags
+    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Course --lastname User --role Admin --email admin@example.local || true"
+
+  airflow-webserver:
+    build: .
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    environment: *airflow_env
+    volumes: *airflow_volumes
+    command: webserver
+    ports:
+      - "8088:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+
+  airflow-scheduler:
+    build: .
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    environment: *airflow_env
+    volumes: *airflow_volumes
+    command: scheduler
+
+
+volumes:
+  pgdata:

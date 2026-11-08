@@ -1,0 +1,24 @@
+{
+  "run_id": "manual__2026-11-08T03:53:48+00:00",
+  "started_utc": "2026-11-08T03:54:06.162424+00:00",
+  "ended_utc": "2026-11-08T03:54:06.472229+00:00",
+  "status": "success",
+  "result": {
+    "files": {
+      "gdp_growth": {
+        "path": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_53_48_00_00/source/gdp_growth.json",
+        "url": "https://api.worldbank.org/v2/country/CHN/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=1998:2023&per_page=100",
+        "sha256": "3021a1677aaf1966b89d0ae00c9a16a7d2742564cf2fa075759350f11e543e15",
+        "rows": 26,
+        "lastupdated": "2026-10-08"
+      },
+      "gdp_per_capita": {
+        "path": "/opt/airflow/project/artifacts/runs/manual__2026-11-08T03_53_48_00_00/source/gdp_per_capita.json",
+        "url": "https://api.worldbank.org/v2/country/CHN/indicator/NY.GDP.PCAP.CD?format=json&date=1998:2023&per_page=100",
+        "sha256": "7bb4d51eba68c16ee95a7c2ef353a6a254b97fbec6cea0e1310ef2f4637f21c7",
+        "rows": 26,
+        "lastupdated": "2026-10-08"
+      }
+    }
+  }
+}

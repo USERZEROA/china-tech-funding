@@ -1,0 +1,14 @@
+{
+  "run_id": "manual__2026-11-08T04:19:16+00:00",
+  "started_utc": "2026-11-08T04:19:23.870125+00:00",
+  "ended_utc": "2026-11-08T04:19:24.007012+00:00",
+  "status": "success",
+  "result": {
+    "macro_rows": 26,
+    "event_rows": 1428,
+    "source_rows": 1568,
+    "prior_event_rows": 1461,
+    "key_readback_match": true,
+    "idempotence": "snapshot replace in one transaction"
+  }
+}

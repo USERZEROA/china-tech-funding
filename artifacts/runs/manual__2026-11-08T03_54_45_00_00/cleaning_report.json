@@ -1,0 +1,15 @@
+{
+  "source_rows": 6741,
+  "selected_rows": 1532,
+  "selected_investment_rows": 1411,
+  "selected_ai_rows": 427,
+  "accepted_events": 1461,
+  "accepted_investment_events": 1342,
+  "accepted_ai_events": 396,
+  "disclosed_events": 572,
+  "quarantined_rows": 23,
+  "quarantine_reasons": {
+    "conflicting_sectors": 13,
+    "conflicting_amounts": 10
+  }
+}

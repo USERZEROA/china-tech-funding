@@ -1,0 +1,16 @@
+#,Column,Content
+A,Investee Company,"Invested company name in English or Chinese pinyin, using official or commonly used names where available"
+B,Investee Company_Original,"Invested company name as recorded on the source platforms, including original Chinese characters where applicable"
+C,Investing Company,Chinese technology company undertaking the investment
+D,Round Investors,"Investors participating in the funding round, including the investing company"
+E,Round,Investment round in which funding was raised
+F,Amount (USD),"Total amount raised in the investment round, converted into US dollars"
+G,Year,Year of the investment round
+H,Type,"Deal type, labelled by the authors as “acquisition” or “investment”"
+I,Sector,Sector of the investee company (as standardised by the authors according to sources)
+J,Industry,Industry of the investee company (as standardised by the authors according to sources)
+K,Continents,Continent where the investee company is located
+L,Regional Groupings,Regional grouping of the investee company
+M,Country,Country where the investee company is located
+N,Province/State,Province or state of the investee company (applicable to the United States and China only)
+O,City/District,City or district of the investee company (applicable to China only)
