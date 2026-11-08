@@ -1,0 +1,11 @@
+{"at_utc": "2026-11-08T05:53:41.993219+00:00", "node": "airflow", "phase": "started", "details": {"workflow": "fixed"}}
+{"at_utc": "2026-11-08T05:53:41.999459+00:00", "node": "data_steward", "phase": "started", "details": {}}
+{"at_utc": "2026-11-08T05:53:42.062877+00:00", "node": "data_steward", "phase": "completed", "details": {"eligible": {"rows": 519, "positive": 85}, "split": {"train": {"rows": 315, "positive": 56}, "validation": {"rows": 100, "positive": 15}, "test": {"rows": 104, "positive": 14}}}}
+{"at_utc": "2026-11-08T05:53:43.041566+00:00", "node": "linear_agent", "phase": "started", "details": {"cycle": 1, "spec": {"family": "logistic_regression", "C": 1.0, "class_weight": "balanced"}}}
+{"at_utc": "2026-11-08T05:53:43.094232+00:00", "node": "linear_agent", "phase": "completed", "details": {"cycle": 1, "validation": {"f1": 0.358974358974359, "precision": 0.2916666666666667, "recall": 0.4666666666666667, "average_precision": 0.3645579387997322, "confusion_matrix": [[68, 17], [8, 7]], "threshold": 0.5, "rows": 100, "positive": 15}}}
+{"at_utc": "2026-11-08T05:53:44.147234+00:00", "node": "forest_agent", "phase": "started", "details": {"cycle": 2, "spec": {"family": "random_forest", "n_estimators": 200, "max_depth": 6, "min_samples_leaf": 5, "class_weight": "balanced_subsample"}}}
+{"at_utc": "2026-11-08T05:53:44.385663+00:00", "node": "forest_agent", "phase": "completed", "details": {"cycle": 2, "validation": {"f1": 0.36, "precision": 0.2571428571428571, "recall": 0.6, "average_precision": 0.28286369292956376, "confusion_matrix": [[59, 26], [6, 9]], "threshold": 0.5, "rows": 100, "positive": 15}}}
+{"at_utc": "2026-11-08T05:53:46.011830+00:00", "node": "judge_agent", "phase": "selected", "details": {"best_cycle": 2, "validation_f1": 0.36}}
+{"at_utc": "2026-11-08T05:53:46.015144+00:00", "node": "final_test", "phase": "started", "details": {"best_cycle": 2}}
+{"at_utc": "2026-11-08T05:53:46.082193+00:00", "node": "final_test", "phase": "completed", "details": {"test_metrics": {"f1": 0.3508771929824561, "precision": 0.23255813953488372, "recall": 0.7142857142857143, "average_precision": 0.397298213602164, "confusion_matrix": [[57, 33], [4, 10]], "threshold": 0.5, "rows": 104, "positive": 14}}}
+{"at_utc": "2026-11-08T05:53:46.090755+00:00", "node": "airflow", "phase": "completed", "details": {"status": "success"}}

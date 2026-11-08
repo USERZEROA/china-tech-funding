@@ -10,6 +10,18 @@ from src import pipeline
 
 
 class CleaningRulesTest(unittest.TestCase):
+    def test_latest_summary_uses_finish_time_not_run_id_prefix(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name, ended in (("scheduled__old", "2026-11-08T05:33:10+00:00"),
+                                ("manual__new", "2026-11-08T06:00:10+00:00")):
+                folder = root / name
+                folder.mkdir()
+                pipeline.save_json(folder / "run_summary.json", {
+                    "run_id": name, "task_times": {"analyze_from_sql": {"ended_utc": ended}}})
+            with patch.object(pipeline, "RUNS", root):
+                self.assertEqual(pipeline.latest_run_summary().parent.name, "manual__new")
+
     def test_zero_is_undisclosed(self):
         self.assertIsNone(pipeline.amount_value("0"))
         self.assertEqual(pipeline.amount_value("100,000,000"), 100000000)

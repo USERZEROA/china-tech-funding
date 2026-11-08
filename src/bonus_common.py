@@ -85,11 +85,9 @@ def prepare(run_id: str) -> dict:
     if any(groups[a] & groups[b] for a, b in
            (("train", "validation"), ("train", "test"), ("validation", "test"))):
         raise ValueError("Company group crosses split partitions")
-    source_paths = sorted(pipeline.RUNS.glob("*/run_summary.json"))
-    if not source_paths:
-        raise ValueError("Part 1 run summary is missing")
-    source = json.loads(source_paths[-1].read_text(encoding="utf-8"))
-    source_events = pd.read_csv(source_paths[-1].parent / "merged_events.csv")
+    source_path = pipeline.latest_run_summary()
+    source = json.loads(source_path.read_text(encoding="utf-8"))
+    source_events = pd.read_csv(source_path.parent / "merged_events.csv")
     source_keys = set(source_events.loc[
         (source_events.deal_type == "investment") & source_events.amount_usd.notna(), "event_key"])
     if source_keys != set(frame.event_key):

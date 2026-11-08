@@ -1,0 +1,16 @@
+[
+  {
+    "cycle": 1,
+    "focus": "improve_precision",
+    "route": "revise",
+    "best_cycle": 1,
+    "validation_f1": 0.358974358974359
+  },
+  {
+    "cycle": 2,
+    "focus": "select_best_validation",
+    "route": "finish",
+    "best_cycle": 2,
+    "validation_f1": 0.36
+  }
+]

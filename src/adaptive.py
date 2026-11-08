@@ -28,6 +28,7 @@ class AdaptiveState(TypedDict, total=False):
     focus: str
     route: str
     routes: list[dict]
+    stop_reason: str
     summary: dict
 
 
@@ -52,6 +53,9 @@ def validate_plan(plan: dict) -> dict:
             raise ValueError("Quality gate is outside the allowed range")
     if type(plan["retry_limit"]) is not int or plan["retry_limit"] != 1:
         raise ValueError("The shared comparison budget permits one retry")
+    if make_spec(plan["second_on_low_precision"], 2, "low_precision") == make_spec(
+            plan["second_on_low_recall"], 2, "low_recall"):
+        raise ValueError("Feedback branches must produce different model settings")
     return {key: plan[key] for key in required}
 
 
@@ -77,40 +81,52 @@ def ask_planner(profile: dict) -> tuple[dict, dict]:
         "Agent values are linear_agent or forest_agent. The second agents MUST differ "
         "from first_agent. Gates must be numbers from 0.15 to 0.80. retry_limit is 1. "
         "Choose a first model and a different second model for validation feedback. "
-        "Use only this aggregate profile; no test outcomes are available: "
+        "Low precision and low recall use different model settings even if they use the same agent. "
+        "Meeting both quality gates ends experimentation early. "
+        "Use only this training profile; no test information is available: "
         + json.dumps(profile, sort_keys=True)
     )
     body = {"model": "openrouter/free", "messages": [
         {"role": "system", "content": "Return valid JSON only. Do not add prose."},
         {"role": "user", "content": prompt}], "temperature": 0, "max_tokens": 1000,
-        "reasoning": {"enabled": False}}
+        "reasoning": {"enabled": False}, "response_format": {"type": "json_object"}}
     request = urllib.request.Request(
         "https://openrouter.ai/api/v1/chat/completions",
         data=json.dumps(body).encode("utf-8"),
         headers={"Authorization": "Bearer " + key, "Content-Type": "application/json",
                  "HTTP-Referer": "https://github.com/USERZEROA/china-tech-funding",
                  "X-Title": "IDS706 funding workflow"}, method="POST")
-    try:
-        with urllib.request.urlopen(request, timeout=35) as response:
-            result = json.loads(response.read().decode("utf-8"))
-        content = result["choices"][0]["message"]["content"]
-        if not isinstance(content, str):
-            raise ValueError("Planner returned no text content")
-        match = re.search(r"\{[\s\S]*\}", content)
-        if not match:
-            raise ValueError("Planner returned no JSON object")
-        plan = validate_plan(json.loads(match.group(0)))
-        return plan, {"origin": "openrouter_free", "model": result.get("model"),
-                      "response_id": result.get("id")}
-    except (urllib.error.URLError, TimeoutError, KeyError, IndexError,
-            ValueError, json.JSONDecodeError) as exc:
-        return fallback_plan(), {"origin": "rules_fallback", "reason": type(exc).__name__,
-                                 "http_status": getattr(exc, "code", None)}
+    errors = []
+    for attempt in (1, 2):
+        try:
+            with urllib.request.urlopen(request, timeout=35) as response:
+                result = json.loads(response.read().decode("utf-8"))
+            content = result["choices"][0]["message"]["content"]
+            if not isinstance(content, str):
+                raise ValueError("Planner returned no text content")
+            match = re.search(r"\{[\s\S]*\}", content)
+            if not match:
+                raise ValueError("Planner returned no JSON object")
+            plan = validate_plan(json.loads(match.group(0)))
+            return plan, {"origin": "openrouter_free", "model": result.get("model"),
+                          "response_id": result.get("id"), "attempt": attempt,
+                          "prior_errors": errors}
+        except (urllib.error.URLError, TimeoutError, KeyError, IndexError,
+                ValueError, json.JSONDecodeError) as exc:
+            errors.append({"attempt": attempt, "reason": type(exc).__name__,
+                           "http_status": getattr(exc, "code", None)})
+    return fallback_plan(), {"origin": "rules_fallback", "prior_errors": errors}
 
 
 def graph_plan(plan: dict) -> dict:
     first = plan["first_agent"]
     return {"entry": first, "exit": "final_test", "budget": 2,
+            "branch_actions": {
+                "low_precision": {"target": plan["second_on_low_precision"],
+                                  "model_spec": make_spec(plan["second_on_low_precision"], 2, "low_precision")},
+                "low_recall": {"target": plan["second_on_low_recall"],
+                               "model_spec": make_spec(plan["second_on_low_recall"], 2, "low_recall")},
+                "quality_pass": {"target": "final_test", "model_spec": None}},
             "nodes": [
                 {"id": "data_steward", "role": "Check SQL data and frozen split"},
                 {"id": "planner_agent", "role": "Create this structured plan"},
@@ -129,6 +145,7 @@ def graph_plan(plan: dict) -> dict:
                  "route": "low_precision"},
                 {"source": "judge_agent", "target": plan["second_on_low_recall"],
                  "route": "low_recall"},
+                {"source": "judge_agent", "target": "final_test", "route": "quality_pass"},
                 {"source": "judge_agent", "target": "final_test", "route": "budget_reached"}]}
 
 
@@ -146,12 +163,42 @@ def retry_step(run_id: str, node: str, work, limit: int = 1):
 
 def make_spec(agent: str, cycle: int, focus: str) -> dict:
     if agent == "linear_agent":
-        return {"family": "logistic_regression", "C": 1.0 if cycle == 1 else 0.3,
-                "class_weight": "balanced"}
+        if cycle == 1:
+            return {"family": "logistic_regression", "C": 1.0, "class_weight": "balanced"}
+        return {"family": "logistic_regression",
+                "C": 3.0 if focus == "low_recall" else 0.3,
+                "class_weight": "balanced" if focus == "low_recall" else None}
     return {"family": "random_forest", "n_estimators": 200,
             "max_depth": 10 if focus == "low_recall" else 6,
             "min_samples_leaf": 2 if focus == "low_recall" else 5,
-            "class_weight": "balanced_subsample"}
+            "class_weight": None if cycle > 1 and focus == "low_precision" else "balanced_subsample"}
+
+
+def quality_focus(metrics: dict, plan: dict) -> str:
+    if metrics["precision"] < plan["precision_gate"]:
+        return "low_precision"
+    if metrics["recall"] < plan["recall_gate"]:
+        return "low_recall"
+    return "quality_pass"
+
+
+def next_step(cycle: int, focus: str, plan: dict) -> tuple[str, str]:
+    if cycle >= 2:
+        return "final_test", "two_experiment_budget"
+    if focus == "quality_pass":
+        return "final_test", "quality_gate_met"
+    if focus == "low_precision":
+        return plan["second_on_low_precision"], focus
+    if focus == "low_recall":
+        return plan["second_on_low_recall"], focus
+    raise ValueError("Unknown validation feedback")
+
+
+def planner_profile(manifest: dict) -> dict:
+    """Only training labels and validation size may reach the Planner API."""
+    return {"training": manifest["split"]["train"],
+            "validation_rows": manifest["split"]["validation"]["rows"],
+            "features": manifest["features"], "experiment_budget": 2}
 
 
 def build_graph(plan: dict):
@@ -169,31 +216,21 @@ def build_graph(plan: dict):
 
     def quality(state: AdaptiveState):
         metrics = state["trials"][-1]["validation"]
-        if metrics["precision"] < state["plan"]["precision_gate"]:
-            focus = "low_precision"
-        elif metrics["recall"] < state["plan"]["recall_gate"]:
-            focus = "low_recall"
-        else:
-            focus = "quality_pass"
+        focus = quality_focus(metrics, state["plan"])
         bonus_common.record(state["run_id"], "quality_agent", "completed",
                             {"cycle": state["cycle"], "focus": focus, "validation": metrics})
         return {"focus": focus}
 
     def judge(state: AdaptiveState):
-        if state["cycle"] >= 2:
-            route = "final_test"
-            reason = "two_experiment_budget"
-        else:
-            key = "second_on_low_recall" if state["focus"] == "low_recall" else "second_on_low_precision"
-            route = state["plan"][key]
-            reason = state["focus"]
+        route, reason = next_step(state["cycle"], state["focus"], state["plan"])
         choice = {"cycle": state["cycle"], "focus": reason, "target": route}
         bonus_common.record(state["run_id"], "judge_agent", "routed", choice)
-        return {"route": route, "routes": list(state.get("routes", [])) + [choice]}
+        return {"route": route, "stop_reason": reason if route == "final_test" else "",
+                "routes": list(state.get("routes", [])) + [choice]}
 
     def final(state: AdaptiveState):
         summary = bonus_common.finish(state["run_id"], "adaptive_agent", state["trials"],
-                                      "two_experiment_budget",
+                                      state["stop_reason"],
                                       {"plan": state["plan"], "routes": state["routes"]})
         return {"summary": summary}
 
@@ -220,9 +257,7 @@ def run_adaptive(run_id: str | None = None) -> dict:
                                                  "started_utc": bonus_common.now()})
     try:
         profile = bonus_common.prepare(run_id)
-        planner_input = {"eligible": profile["eligible"], "split": profile["split"],
-                         "features": profile["features"], "company_group_overlap": 0,
-                         "experiment_budget": 2}
+        planner_input = planner_profile(profile)
         bonus_common.record(run_id, "planner_agent", "started", planner_input)
         plan, provenance = ask_planner(planner_input)
         plan = validate_plan(plan)

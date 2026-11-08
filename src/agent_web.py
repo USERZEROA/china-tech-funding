@@ -1,12 +1,13 @@
 """Small live page for the funding research loop."""
 
 import json
+import re
 import threading
 from datetime import datetime, timezone
 
-from flask import Flask, jsonify, render_template_string
+from flask import Flask, abort, jsonify, render_template_string
 
-from src.agent_loop import AGENT_RUNS, graph_spec, run_agent_loop
+from src.agent_loop import AGENT_RUNS, agent_run_dir, graph_spec, run_agent_loop
 from src.bonus_web import bonus_page
 
 
@@ -87,12 +88,16 @@ PAGE = """<!doctype html>
       }
     }
 
+    let selectedRunId = null;
     async function refresh() {
-      const data=await (await fetch('/api/latest')).json();
+      const url=selectedRunId ? `/api/runs/${encodeURIComponent(selectedRunId)}` : '/api/latest';
+      const response=await fetch(url);
+      if (!response.ok) return;
+      const data=await response.json();
       drawGraph(data.graph, data.events);
       const status=data.status||{};
       document.getElementById('run-status').textContent=`Run: ${status.run_id||'none'} · ${status.status||'idle'}`;
-      document.getElementById('run-button').disabled=status.status==='running';
+      document.getElementById('run-button').disabled=['starting','running'].includes(status.status);
       const summary=data.summary;
       document.getElementById('source').textContent=summary ? `Source DAG run: ${summary.source_run_id} · Eligible: ${summary.eligible.rows} · Company overlap: ${summary.company_group_overlap}` : '';
       if (summary) {
@@ -100,11 +105,14 @@ PAGE = """<!doctype html>
           summary.experiments.map(x=>`<tr><td>${x.cycle}</td><td>${x.spec.family}</td><td>${fmt(x.validation.f1)}</td><td>${fmt(x.validation.precision)}</td><td>${fmt(x.validation.recall)}</td><td>${fmt(x.validation.average_precision)}</td><td>${x.cycle===summary.best_cycle?'Yes':''}</td></tr>`).join('')+'</table>';
         const m=summary.test_metrics;
         document.getElementById('test').innerHTML=`<div class="metric">F1 ${fmt(m.f1)}</div><p>Precision ${fmt(m.precision)} · Recall ${fmt(m.recall)} · AP ${fmt(m.average_precision)}</p><p>Confusion matrix [TN, FP] / [FN, TP]: ${matrix(m.confusion_matrix)}</p><p>Test rows: ${m.rows}; positive: ${m.positive}. Stop: ${summary.stop_reason}.</p>`;
+      } else {
+        document.getElementById('experiments').textContent='Waiting for validation experiments.';
+        document.getElementById('test').textContent='The test set opens after validation selection.';
       }
       document.getElementById('events').innerHTML=data.events.length ? '<table><tr><th>UTC time</th><th>Agent</th><th>Phase</th><th>Route</th></tr>'+
         data.events.map(x=>`<tr><td>${x.at_utc}</td><td>${x.node}</td><td>${x.phase}</td><td>${x.details?.route||''}</td></tr>`).join('')+'</table>' : 'Waiting for a run.';
     }
-    document.getElementById('run-button').onclick=async()=>{ const response=await fetch('/run',{method:'POST'}); if(!response.ok) alert('A run is already in progress.'); await refresh(); };
+    document.getElementById('run-button').onclick=async()=>{ const response=await fetch('/run',{method:'POST'}); if(!response.ok){alert('A run is already in progress.');return;} const started=await response.json(); selectedRunId=started.run_id; document.getElementById('experiments').textContent='Waiting for validation experiments.'; document.getElementById('test').textContent='The test set opens after validation selection.'; await refresh(); };
     refresh(); setInterval(refresh, 1000);
   </script>
 </body>
@@ -118,17 +126,35 @@ def index():
 
 @app.get("/api/latest")
 def latest():
-    runs = sorted(folder for folder in AGENT_RUNS.glob("*") if folder.is_dir())
+    runs = [folder for folder in AGENT_RUNS.glob("agent__*")
+            if folder.is_dir() and (folder / "status.json").exists()]
     if not runs:
         return jsonify({"graph": graph_spec(), "events": [], "status": {"status": "idle"}, "summary": None})
-    folder = runs[-1]
+    folder = max(runs, key=lambda path: (
+        json.loads((path / "status.json").read_text(encoding="utf-8")).get("started_utc", ""),
+        path.name))
+    return jsonify(run_payload(folder))
+
+
+def run_payload(folder):
     status_file = folder / "status.json"
     summary_file = folder / "run_summary.json"
     events_file = folder / "events.jsonl"
     events = [json.loads(line) for line in events_file.read_text(encoding="utf-8").splitlines()] if events_file.exists() else []
-    return jsonify({"graph": graph_spec(), "events": events,
-                    "status": json.loads(status_file.read_text(encoding="utf-8")) if status_file.exists() else {"status": "starting"},
-                    "summary": json.loads(summary_file.read_text(encoding="utf-8")) if summary_file.exists() else None})
+    return {"graph": graph_spec(), "events": events,
+            "status": json.loads(status_file.read_text(encoding="utf-8")) if status_file.exists() else {"status": "starting"},
+            "summary": json.loads(summary_file.read_text(encoding="utf-8")) if summary_file.exists() else None}
+
+
+@app.get("/api/runs/<path:run_id>")
+def selected_run(run_id):
+    if not re.fullmatch(r"agent__[A-Za-z0-9_.:+-]+", run_id):
+        abort(404)
+    folder = AGENT_RUNS / re.sub(r"[^A-Za-z0-9_.-]", "_", run_id)
+    status_file = folder / "status.json"
+    if not status_file.exists() or json.loads(status_file.read_text(encoding="utf-8")).get("run_id") != run_id:
+        abort(404)
+    return jsonify(run_payload(folder))
 
 
 @app.post("/run")
@@ -136,6 +162,9 @@ def start_run():
     if not run_lock.acquire(blocking=False):
         return jsonify({"error": "run already in progress"}), 409
     run_id = "agent__" + datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f+00:00")
+    (agent_run_dir(run_id) / "status.json").write_text(
+        json.dumps({"run_id": run_id, "status": "starting", "started_utc": datetime.now(timezone.utc).isoformat()}),
+        encoding="utf-8")
 
     def worker():
         try:

@@ -1,0 +1,20 @@
+{"at_utc": "2026-11-08T05:53:28.293761+00:00", "node": "data_steward", "phase": "started", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.365268+00:00", "node": "data_steward", "phase": "completed", "details": {"cycle": 0, "attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.370075+00:00", "node": "hypothesis_agent", "phase": "started", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.379040+00:00", "node": "hypothesis_agent", "phase": "completed", "details": {"cycle": 1, "spec": {"family": "logistic_regression", "C": 1.0, "class_weight": "balanced", "reason": "Start with a regularized linear baseline"}, "attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.384457+00:00", "node": "model_engineer", "phase": "started", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.412222+00:00", "node": "model_engineer", "phase": "completed", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.417066+00:00", "node": "evaluation_agent", "phase": "started", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.442554+00:00", "node": "evaluation_agent", "phase": "completed", "details": {"validation": {"f1": 0.358974358974359, "precision": 0.2916666666666667, "recall": 0.4666666666666667, "average_precision": 0.3645579387997322, "confusion_matrix": [[68, 17], [8, 7]], "threshold": 0.5, "rows": 100, "positive": 15}, "attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.446712+00:00", "node": "judge_agent", "phase": "started", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.457443+00:00", "node": "judge_agent", "phase": "completed", "details": {"feedback": {"cycle": 1, "focus": "improve_precision", "route": "revise", "best_cycle": 1, "validation_f1": 0.358974358974359}, "route": "revise", "stop_reason": "", "attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.462194+00:00", "node": "hypothesis_agent", "phase": "started", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.473924+00:00", "node": "hypothesis_agent", "phase": "completed", "details": {"cycle": 2, "spec": {"family": "random_forest", "n_estimators": 200, "max_depth": 6, "min_samples_leaf": 5, "class_weight": "balanced_subsample", "reason": "Validation feedback requested improve precision"}, "attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.478433+00:00", "node": "model_engineer", "phase": "started", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.677980+00:00", "node": "model_engineer", "phase": "completed", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.681248+00:00", "node": "evaluation_agent", "phase": "started", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.729969+00:00", "node": "evaluation_agent", "phase": "completed", "details": {"validation": {"f1": 0.36, "precision": 0.2571428571428571, "recall": 0.6, "average_precision": 0.28286369292956376, "confusion_matrix": [[59, 26], [6, 9]], "threshold": 0.5, "rows": 100, "positive": 15}, "attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.733276+00:00", "node": "judge_agent", "phase": "started", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.741531+00:00", "node": "judge_agent", "phase": "completed", "details": {"feedback": {"cycle": 2, "focus": "select_best_validation", "route": "finish", "best_cycle": 2, "validation_f1": 0.36}, "route": "finish", "stop_reason": "two_experiment_budget", "attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.744937+00:00", "node": "final_test", "phase": "started", "details": {"attempt": 1}}
+{"at_utc": "2026-11-08T05:53:28.802381+00:00", "node": "final_test", "phase": "completed", "details": {"test_metrics": {"f1": 0.3508771929824561, "precision": 0.23255813953488372, "recall": 0.7142857142857143, "average_precision": 0.397298213602164, "confusion_matrix": [[57, 33], [4, 10]], "threshold": 0.5, "rows": 104, "positive": 14}, "attempt": 1}}

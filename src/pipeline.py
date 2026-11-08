@@ -40,6 +40,15 @@ def save_json(path: Path, value: dict | list) -> None:
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
 
 
+def latest_run_summary() -> Path:
+    """Choose the latest completed pipeline run by actual finish time."""
+    paths = list(RUNS.glob("*/run_summary.json"))
+    if not paths:
+        raise ValueError("No completed Part 1 run was found")
+    return max(paths, key=lambda path: datetime.fromisoformat(
+        json.loads(path.read_text(encoding="utf-8"))["task_times"]["analyze_from_sql"]["ended_utc"]))
+
+
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 

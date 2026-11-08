@@ -1,0 +1,13 @@
+{
+  "plan": {
+    "second_on_low_recall": "forest_agent",
+    "retry_limit": 1,
+    "second_on_low_precision": "forest_agent",
+    "recall_gate": 0.5,
+    "first_agent": "linear_agent",
+    "precision_gate": 0.35
+  },
+  "origin": "rules_fallback",
+  "reason": "ValueError",
+  "http_status": null
+}

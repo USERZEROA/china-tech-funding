@@ -1,0 +1,15 @@
+{
+  "training": {
+    "rows": 315,
+    "positive": 56
+  },
+  "validation_rows": 100,
+  "features": [
+    "year",
+    "gdp_growth",
+    "gdp_per_capita",
+    "round",
+    "sector"
+  ],
+  "experiment_budget": 2
+}

@@ -29,7 +29,7 @@ services:
     volumes: &airflow_volumes
       - .:/opt/airflow/project
       - ./dags:/opt/airflow/dags
-    command: bash -c "airflow db migrate && airflow users create --username admin --password admin --firstname Course --lastname User --role Admin --email admin@example.local || true"
+    command: bash -c "airflow db migrate && (airflow users create --username admin --password admin --firstname Course --lastname User --role Admin --email admin@example.local || airflow users list | grep -q admin)"
 
   airflow-webserver:
     build: .

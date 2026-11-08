@@ -1,0 +1,41 @@
+{
+  "source_run_id": "scheduled__2026-11-01T04:33:00+00:00",
+  "data_fingerprint": "cd9326054146aaedd02e282a0b2b5d4e4d9af3e34d62ac4e83c42f96f117fcfc",
+  "eligible": {
+    "rows": 519,
+    "positive": 85,
+    "negative": 434
+  },
+  "features": [
+    "year",
+    "gdp_growth",
+    "gdp_per_capita",
+    "round",
+    "sector"
+  ],
+  "excluded_from_features": [
+    "amount_usd",
+    "company",
+    "event_key"
+  ],
+  "target": "amount_usd >= 100000000",
+  "split": {
+    "train": {
+      "rows": 315,
+      "positive": 56,
+      "negative": 259
+    },
+    "validation": {
+      "rows": 100,
+      "positive": 15,
+      "negative": 85
+    },
+    "test": {
+      "rows": 104,
+      "positive": 14,
+      "negative": 90
+    }
+  },
+  "company_group_overlap": 0,
+  "sql": "SELECT event_key, company, year, gdp_growth, gdp_per_capita,\n             round, sector, amount_usd::double precision FROM funding_events\n             WHERE deal_type = 'investment' AND amount_usd IS NOT NULL AND amount_usd > 0\n             ORDER BY event_key"
+}

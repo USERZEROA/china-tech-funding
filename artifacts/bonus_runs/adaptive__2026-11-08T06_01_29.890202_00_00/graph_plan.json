@@ -1,0 +1,104 @@
+{
+  "entry": "linear_agent",
+  "exit": "final_test",
+  "budget": 2,
+  "branch_actions": {
+    "low_precision": {
+      "target": "forest_agent",
+      "model_spec": {
+        "family": "random_forest",
+        "n_estimators": 200,
+        "max_depth": 6,
+        "min_samples_leaf": 5,
+        "class_weight": null
+      }
+    },
+    "low_recall": {
+      "target": "forest_agent",
+      "model_spec": {
+        "family": "random_forest",
+        "n_estimators": 200,
+        "max_depth": 10,
+        "min_samples_leaf": 2,
+        "class_weight": "balanced_subsample"
+      }
+    },
+    "quality_pass": {
+      "target": "final_test",
+      "model_spec": null
+    }
+  },
+  "nodes": [
+    {
+      "id": "data_steward",
+      "role": "Check SQL data and frozen split"
+    },
+    {
+      "id": "planner_agent",
+      "role": "Create this structured plan"
+    },
+    {
+      "id": "linear_agent",
+      "role": "Train regularized logistic regression"
+    },
+    {
+      "id": "forest_agent",
+      "role": "Train random forest"
+    },
+    {
+      "id": "quality_agent",
+      "role": "Score validation and name weakness"
+    },
+    {
+      "id": "judge_agent",
+      "role": "Route by plan and validation"
+    },
+    {
+      "id": "final_test",
+      "role": "Open holdout once and stop"
+    }
+  ],
+  "edges": [
+    {
+      "source": "data_steward",
+      "target": "planner_agent"
+    },
+    {
+      "source": "planner_agent",
+      "target": "linear_agent",
+      "route": "plan.first_agent"
+    },
+    {
+      "source": "linear_agent",
+      "target": "quality_agent"
+    },
+    {
+      "source": "forest_agent",
+      "target": "quality_agent"
+    },
+    {
+      "source": "quality_agent",
+      "target": "judge_agent"
+    },
+    {
+      "source": "judge_agent",
+      "target": "forest_agent",
+      "route": "low_precision"
+    },
+    {
+      "source": "judge_agent",
+      "target": "forest_agent",
+      "route": "low_recall"
+    },
+    {
+      "source": "judge_agent",
+      "target": "final_test",
+      "route": "quality_pass"
+    },
+    {
+      "source": "judge_agent",
+      "target": "final_test",
+      "route": "budget_reached"
+    }
+  ]
+}

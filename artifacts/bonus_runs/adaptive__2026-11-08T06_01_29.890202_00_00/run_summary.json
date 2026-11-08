@@ -1,0 +1,143 @@
+{
+  "run_id": "adaptive__2026-11-08T06:01:29.890202+00:00",
+  "mode": "adaptive_agent",
+  "status": "success",
+  "source_run_id": "scheduled__2026-11-01T04:33:00+00:00",
+  "source_hashes": {
+    "Documentation.csv": "9dc5948e10746a6b097d04fe325c1f518e75ff6ac2717e2bb39f12418193d4c5",
+    "Dataset.csv": "a1af2ace102b8a1eab2804e9dd9871b3a2427330ac54a09805a0e48f381aed6a",
+    "Codebook.csv": "f462496c708c173099a470f7ac830ab2abf7faa26315da638fb23a5fe114f43a",
+    "gdp_growth": "3021a1677aaf1966b89d0ae00c9a16a7d2742564cf2fa075759350f11e543e15",
+    "gdp_per_capita": "7bb4d51eba68c16ee95a7c2ef353a6a254b97fbec6cea0e1310ef2f4637f21c7"
+  },
+  "data_fingerprint": "cd9326054146aaedd02e282a0b2b5d4e4d9af3e34d62ac4e83c42f96f117fcfc",
+  "split": {
+    "train": {
+      "rows": 315,
+      "positive": 56
+    },
+    "validation": {
+      "rows": 100,
+      "positive": 15
+    },
+    "test": {
+      "rows": 104,
+      "positive": 14
+    }
+  },
+  "eligible": {
+    "rows": 519,
+    "positive": 85
+  },
+  "company_group_overlap": 0,
+  "experiment_budget": 2,
+  "experiments": [
+    {
+      "cycle": 1,
+      "agent": "linear_agent",
+      "spec": {
+        "family": "logistic_regression",
+        "C": 1.0,
+        "class_weight": "balanced"
+      },
+      "model_path": "/app/artifacts/bonus_runs/adaptive__2026-11-08T06_01_29.890202_00_00/model_01.joblib",
+      "validation": {
+        "f1": 0.358974358974359,
+        "precision": 0.2916666666666667,
+        "recall": 0.4666666666666667,
+        "average_precision": 0.3645579387997322,
+        "confusion_matrix": [
+          [
+            68,
+            17
+          ],
+          [
+            8,
+            7
+          ]
+        ],
+        "threshold": 0.5,
+        "rows": 100,
+        "positive": 15
+      }
+    },
+    {
+      "cycle": 2,
+      "agent": "forest_agent",
+      "spec": {
+        "family": "random_forest",
+        "n_estimators": 200,
+        "max_depth": 6,
+        "min_samples_leaf": 5,
+        "class_weight": null
+      },
+      "model_path": "/app/artifacts/bonus_runs/adaptive__2026-11-08T06_01_29.890202_00_00/model_02.joblib",
+      "validation": {
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "average_precision": 0.31262255553470725,
+        "confusion_matrix": [
+          [
+            85,
+            0
+          ],
+          [
+            15,
+            0
+          ]
+        ],
+        "threshold": 0.5,
+        "rows": 100,
+        "positive": 15
+      }
+    }
+  ],
+  "best_cycle": 1,
+  "test_metrics": {
+    "f1": 0.3829787234042553,
+    "precision": 0.2727272727272727,
+    "recall": 0.6428571428571429,
+    "average_precision": 0.3114681291324636,
+    "confusion_matrix": [
+      [
+        66,
+        24
+      ],
+      [
+        5,
+        9
+      ]
+    ],
+    "threshold": 0.5,
+    "rows": 104,
+    "positive": 14
+  },
+  "stop_reason": "two_experiment_budget",
+  "ended_utc": "2026-11-08T06:01:31.191554+00:00",
+  "plan": {
+    "second_on_low_recall": "forest_agent",
+    "retry_limit": 1,
+    "second_on_low_precision": "forest_agent",
+    "recall_gate": 0.5,
+    "first_agent": "linear_agent",
+    "precision_gate": 0.35
+  },
+  "routes": [
+    {
+      "cycle": 1,
+      "focus": "low_precision",
+      "target": "forest_agent"
+    },
+    {
+      "cycle": 2,
+      "focus": "two_experiment_budget",
+      "target": "final_test"
+    }
+  ],
+  "planner": {
+    "origin": "rules_fallback",
+    "reason": "ValueError",
+    "http_status": null
+  }
+}

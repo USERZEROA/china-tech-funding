@@ -10,10 +10,11 @@ Start Docker Desktop with Linux containers. From this directory:
 
 ```powershell
 docker compose up --build -d
-docker compose exec airflow-webserver airflow dags trigger china_tech_funding
+docker compose exec -T airflow-webserver airflow dags trigger china_tech_funding
+docker compose exec -T airflow-webserver airflow dags list-runs -d china_tech_funding -o plain
 ```
 
-Open <http://localhost:8088> and sign in with `admin` / `admin`. The DAG runs every Sunday at 00:33 in the `America/New_York` time zone. The [November 8 scheduled run](artifacts/runs/scheduled__2026-11-01T04_33_00_00_00/run_summary.json) succeeded at 00:33 EST. The two source branches ran in parallel. Each run saves inputs, SHA-256 hashes, cleaning and merge checks, database readback, SQL analysis, and task times under `artifacts/runs/<run_id>/`.
+Open <http://localhost:8088> and sign in with `admin` / `admin`. Wait until the newest DAG run shows `success` before starting Part 2. The DAG runs every Sunday at 00:33 in the `America/New_York` time zone. The [November 8 scheduled run](artifacts/runs/scheduled__2026-11-01T04_33_00_00_00/run_summary.json) succeeded at 00:33 EST. The two source branches ran in parallel. Each run saves inputs, SHA-256 hashes, cleaning and merge checks, database readback, SQL analysis, and task times under `artifacts/runs/<run_id>/`.
 
 The pipeline retains original investor rows in PostgreSQL, groups plausible funding events, and quarantines conflicting candidates. Zero amounts are treated as undisclosed. The load replaces one validated snapshot in a transaction, so another run does not add duplicate rows.
 
@@ -28,23 +29,33 @@ docker compose up --build -d agent-ui
 docker compose exec -T agent-ui python -m src.agent_loop
 ```
 
-Open <http://localhost:8090> for the agent graph and results. The [Part 2 run summary](artifacts/agent_runs/agent__2026-11-08T04_31_51.037232_00_00/run_summary.json) records 519 disclosed investment events, including 85 at or above $100 million. Its frozen company-grouped split has 315 training, 100 validation, and 104 test rows, with no company overlap. A validation feedback loop compared logistic regression (F1 0.359) with random forest (F1 0.360) and selected the latter. The final test returned F1 0.351, precision 0.233, recall 0.714, AP 0.397, and confusion matrix `[[57, 33], [4, 10]]`. Precision is limited, so these are exploratory results.
+Open <http://localhost:8090> for the agent graph and results. The [Part 2 run summary](artifacts/agent_runs/agent__2026-11-08T05_53_28.262608_00_00/run_summary.json) records 519 disclosed investment events, including 85 at or above $100 million. Its frozen company-grouped split has 315 training, 100 validation, and 104 test rows, with no company overlap. A validation feedback loop compared logistic regression (F1 0.359) with random forest (F1 0.360) and selected the latter. The final test returned F1 0.351, precision 0.233, recall 0.714, AP 0.397, and confusion matrix `[[57, 33], [4, 10]]`. Precision is limited, so these are exploratory results.
 
-The classroom loop was adapted with a Data Steward that checks SQL eligibility and freezes company splits, a Hypothesis Agent that chooses a second model from validation feedback, and a separate Evaluation Agent that scores validation only. The Judge selects by validation F1; a Final Test node opens the holdout once and then stops.
+The classroom loop was adapted with a Data Steward that checks SQL eligibility and freezes company splits, a Hypothesis Agent that configures the second experiment from validation feedback, and a separate Evaluation Agent that scores validation only. The Judge selects by validation F1; a Final Test node opens the holdout once and then stops.
 
 ## Run the Bonus comparison
 
-Put an OpenRouter key in the ignored `private/openrouter.env` file as `OPENROUTER_API_KEY=<your key>` for the Planner. Then run the fixed Airflow baseline, the classroom loop, and the adaptive graph:
+For a fresh clone, create the local key file from [openrouter.env.example](openrouter.env.example), then fill in your OpenRouter API key. The key file is ignored by Git:
+
+```powershell
+New-Item -ItemType Directory -Force private | Out-Null
+Copy-Item openrouter.env.example private/openrouter.env
+```
+
+Then run the fixed Airflow baseline, the classroom loop, and the adaptive graph:
 
 ```powershell
 docker compose exec -T airflow-webserver airflow dags unpause funding_fixed_baseline
 docker compose exec -T airflow-webserver airflow dags trigger funding_fixed_baseline
+docker compose exec -T airflow-webserver airflow dags list-runs -d funding_fixed_baseline -o plain
 docker compose exec -T agent-ui python -m src.agent_loop
 docker compose exec -T agent-ui python -m src.adaptive
 docker compose exec -T agent-ui python -m src.bonus_eval --fixed '<Airflow run ID>' --simple '<agent run ID>' --adaptive '<adaptive run ID>'
 ```
 
-Open <http://localhost:8090/bonus> for the workflow graph, evaluation cases, and comparison. The [comparison run](artifacts/bonus_runs/comparison__2026-11-08T05_09_18.116137_00_00/workflow_comparison.json) used the same 519 events, frozen company split, and two model fits per workflow. The Planner chose a forest first, then routed to a linear model after a low precision check. All three workflows reached test F1 0.351 and AP 0.397; this run shows a different route, not a model gain. The [evaluation suite](artifacts/bonus_runs/comparison__2026-11-08T05_09_18.116137_00_00/evaluation_results.json) passed 7/7 cases, including one controlled transient failure recovered after one retry. The three main runs needed no retries.
+Wait for the fixed Airflow DAG to show `success` before running the comparison command. Use the run IDs printed by the three commands; the evaluator checks their source snapshot, split files, and fit budgets. The Planner needs a working API key for the full Bonus evaluation. Open <http://localhost:8090/bonus> for the workflow graph, evaluation cases, and comparison.
+
+The [comparison run](artifacts/bonus_runs/comparison__2026-11-08T06_03_03.400078_00_00/workflow_comparison.json) used the same 519 events and company split. The Planner chose a forest first, then a linear model after low precision feedback. Low recall would use different linear-model settings; meeting both quality gates would stop early. All three workflows reached test F1 0.351 and AP 0.397, so this comparison shows adaptive coordination without a model gain. The [evaluation results](artifacts/bonus_runs/comparison__2026-11-08T06_03_03.400078_00_00/evaluation_results.json) passed 15/15 cases, including identical split file hashes and distinct actions for the three feedback outcomes. A controlled transient error recovered after one retry; the main runs needed none.
 
 ## Screenshots
 
@@ -75,3 +86,7 @@ Open <http://localhost:8090/bonus> for the workflow graph, evaluation cases, and
 ### Workflow comparison
 
 ![Three workflow comparison](screenshots/06_workflow_comparison.png)
+
+### Evaluation suite
+
+![Bonus evaluation cases and final holdout](screenshots/08_evaluation_suite.png)

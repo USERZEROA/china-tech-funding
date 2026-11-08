@@ -1,0 +1,159 @@
+[
+  {
+    "id": "same_data_split_budget",
+    "input": "Three completed workflow run IDs",
+    "expected": "Same source snapshot and company split; each workflow permits at most two fits",
+    "scoring_criteria": "1 point if all invariants hold; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "same_partition_files",
+    "input": "Three workflows' train, validation, and test CSV files",
+    "expected": "Each matching partition has identical SHA-256 bytes across workflows",
+    "scoring_criteria": "1 point if all three partitions match byte for byte; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "planner_changes_execution",
+    "input": "Validated Planner graph and execution events",
+    "expected": "The graph entry, feedback route, and executed model nodes match the plan",
+    "scoring_criteria": "1 point if all executed nodes and routes match; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "intermediate_quality_route",
+    "input": "First adaptive validation metrics and plan gates",
+    "expected": "Quality Agent identifies the measured weakness and Judge follows that branch",
+    "scoring_criteria": "1 point for the exact focus and branch; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "planner_input_sealed",
+    "input": "Saved Planner API input",
+    "expected": "Only training labels, validation size, features, and fit budget are sent",
+    "scoring_criteria": "1 point if the input has only the allowed fields; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "api_planner_used",
+    "input": "Planner response metadata",
+    "expected": "A free API model returned the structured plan used for this run",
+    "scoring_criteria": "1 point for an API response ID and API origin; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "route_low_precision",
+    "input": {
+      "plan": {
+        "precision_gate": 0.45,
+        "retry_limit": 1,
+        "recall_gate": 0.55,
+        "second_on_low_precision": "forest_agent",
+        "first_agent": "linear_agent",
+        "second_on_low_recall": "forest_agent"
+      },
+      "validation_metrics": {
+        "precision": 0.1,
+        "recall": 0.9
+      }
+    },
+    "expected": {
+      "focus": "low_precision",
+      "next_agent": "forest_agent",
+      "settings": {
+        "max_depth": 6,
+        "min_samples_leaf": 5,
+        "class_weight": null
+      }
+    },
+    "scoring_criteria": "1 point if the real routing functions choose the expected action; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "route_low_recall",
+    "input": {
+      "plan": {
+        "precision_gate": 0.45,
+        "retry_limit": 1,
+        "recall_gate": 0.55,
+        "second_on_low_precision": "forest_agent",
+        "first_agent": "linear_agent",
+        "second_on_low_recall": "forest_agent"
+      },
+      "validation_metrics": {
+        "precision": 0.9,
+        "recall": 0.1
+      }
+    },
+    "expected": {
+      "focus": "low_recall",
+      "next_agent": "forest_agent",
+      "settings": {
+        "max_depth": 10,
+        "min_samples_leaf": 2,
+        "class_weight": "balanced_subsample"
+      }
+    },
+    "scoring_criteria": "1 point if the real routing functions choose the expected action; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "route_quality_pass",
+    "input": {
+      "plan": {
+        "precision_gate": 0.45,
+        "retry_limit": 1,
+        "recall_gate": 0.55,
+        "second_on_low_precision": "forest_agent",
+        "first_agent": "linear_agent",
+        "second_on_low_recall": "forest_agent"
+      },
+      "validation_metrics": {
+        "precision": 0.9,
+        "recall": 0.9
+      }
+    },
+    "expected": {
+      "focus": "quality_pass",
+      "next_agent": "final_test",
+      "settings": null
+    },
+    "scoring_criteria": "1 point if the real routing functions choose the expected action; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "feedback_changes_action",
+    "input": "Three controlled validation outcomes under one saved plan",
+    "expected": "Low precision and low recall change model settings; quality pass stops early",
+    "scoring_criteria": "1 point if the three actual actions differ as specified; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "bounded_retry",
+    "input": "Controlled first-attempt OSError in retry probe",
+    "expected": "One logged retry and success on the second attempt",
+    "scoring_criteria": "1 point for two attempts, one retry event, and recovery; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "finite_stop_sealed_test",
+    "input": "Adaptive run event timestamps",
+    "expected": "At most two model fits, final selection, one test opening, then stop",
+    "scoring_criteria": "1 point if order and counts hold; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "final_output_quality",
+    "input": "One adaptive holdout evaluation",
+    "expected": "F1 at least 0.30 and AP at least the test positive prevalence",
+    "scoring_criteria": "1 point if both measured thresholds hold; otherwise 0",
+    "pass_threshold": 1
+  },
+  {
+    "id": "baseline_feedback",
+    "input": "Fixed DAG feedback and simple agent feedback files",
+    "expected": "Fixed selection uses validation; simple loop revises then stops",
+    "scoring_criteria": "1 point if both feedback paths are present; otherwise 0",
+    "pass_threshold": 1
+  }
+]

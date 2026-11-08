@@ -167,10 +167,9 @@ def data_steward(state: LoopState) -> dict:
         raise ValueError("Undisclosed amount entered the modeling subset")
     frame["target"] = (frame["amount_usd"] >= TARGET_USD).astype(int)
 
-    part1_runs = sorted(pipeline.RUNS.glob("*/run_summary.json"))
-    if not part1_runs:
-        raise ValueError("No completed Part 1 run was found")
-    source_folder = part1_runs[-1].parent
+    source_path = pipeline.latest_run_summary()
+    source_folder = source_path.parent
+    source_summary = json.loads(source_path.read_text(encoding="utf-8"))
     source_events = pd.read_csv(source_folder / "merged_events.csv")
     source_keys = set(source_events.loc[
         (source_events["deal_type"] == "investment") & source_events["amount_usd"].notna(),
@@ -191,13 +190,13 @@ def data_steward(state: LoopState) -> dict:
         paths[name] = str(path)
     pipeline.save_json(folder / "split_manifest.json", split)
     pipeline.save_json(folder / "data_profile.json", {
-        "source_run_id": json.loads(part1_runs[-1].read_text(encoding="utf-8"))["run_id"],
+        "source_run_id": source_summary["run_id"],
         "data_fingerprint": fingerprint, "eligible": target_counts(frame),
         "features": FEATURES, "excluded_from_features": ["amount_usd", "company", "event_key"],
         "target": "amount_usd >= 100000000", "split": split["counts"],
         "company_group_overlap": split["company_group_overlap"], "sql": sql,
     })
-    return {"source_run_id": json.loads(part1_runs[-1].read_text(encoding="utf-8"))["run_id"],
+    return {"source_run_id": source_summary["run_id"],
             "data_fingerprint": fingerprint, "split": split,
             "train_path": paths["train"], "validation_path": paths["validation"],
             "test_path": paths["test"], "cycle": 0, "experiments": [],
